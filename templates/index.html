@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% include 'includes/header.html' %}
+    <meta charset="UTF-8">
+    <title>CCOP</title>
+</head>
+
+<body>
+    <!-- Top Navbar -->
+    <nav class="navbar navbar-default navbar-fixed">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">CCOP</a>
+        </div>
+
+        <!--Filter Button-->
+        <button id="side-nav-btn" class="btn btn-default btn-lg pull-right" type="button">Filter
+            <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
+        </button>
+    </nav>
+
+    <!--Clearfix after a pull-right-->
+    <div class="clearfix"></div>
+
+    <!--Side Navigation Bar-->
+    <div id="nav-side-menu">
+        <div class="brand">Filters</div>
+
+        <div class="menu-list">
+            <ul id="menu-content" class="menu-content collapse out">
+
+
+                <!--Choose Dataset-->
+                <li data-toggle="collapse" data-target="#dataset" class="collapsed">
+                    <a href="#"><i class=""></i> Choose Dataset <span class="arrow"></span></a>
+                </li>
+                <ul class="sub-menu collapse" id="dataset">
+                    <li>Crime <input id="crime-checkbox" type="checkbox"> </li>
+                    <li>Arrest <input id="arrest-checkbox" type="checkbox"> </li>
+                </ul>
+
+                <!--Choose Cities-->
+                <li data-toggle="collapse" data-target="#cities" class="collapsed">
+                    <a href="#"><i class=""></i> Select Cities <span class="arrow"></span></a>
+                </li>
+                <ul class="sub-menu collapse" id="cities">
+                    <li class="active"><a href="#">Rockville</a></li>
+                    <li><a href="#">Takoma park</a></li>
+
+                </ul>
+
+                <!--Choose Crime-->
+                <li data-toggle="collapse" data-target="#crime" class="collapsed">
+                    <a href="#"><i class=""></i> Filter By Crime <span class="arrow"></span></a>
+                </li>
+                <ul class="sub-menu collapse" id="crime">
+                    <li>Larcenty</li>
+                    <li>Murder</li>
+                    <li>Tresspassing</li>
+                </ul>
+            </ul>
+        </div>
+    </div>
+
+
+    <!--Main Content-->
+    <div id="main">
+        <div class="row">
+
+            <!--Map View-->
+            <div class="col-md-7">
+                <div class="map-wrapper">
+                    <div id="map"></div>
+                </div>
+            </div>
+
+            <!--Chart View-->
+            <div class="col-md-5">
+                <div class="chart-wrapper">
+                    <div id="chart"></div>
+                    <!--<canvas id="chart"></canvas>-->
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    {% include 'includes/scripts.html' %}
+</body>
+
+</html>

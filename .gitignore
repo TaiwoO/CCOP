@@ -1,0 +1,13 @@
+# the main config file contains API keys
+# and should stay off github
+config.ini
+
+# compiled Python binaries
+*.pyc
+
+# database files will be huge, ignore them
+*.db
+
+# the setup script creates a virtual environment
+# don't upload the environment to github
+ccop_env/*
