@@ -1,3 +1,5 @@
+from configparser import SafeConfigParser
+
 # interface for uniformly interacting with the config file
 
 # open and parse the config file
