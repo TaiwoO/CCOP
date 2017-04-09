@@ -13,6 +13,7 @@ python3 -m venv ccop_env
 ccop_env/bin/pip3 install wheel		# needed to build wheels
 ccop_env/bin/pip3 install flask
 ccop_env/bin/pip3 install flask-sqlalchemy
+ccop_env/bin/pip3 install sqlalchemy-migrate
 ccop_env/bin/pip3 install requests
 
 # have yet to find a reason to have apache

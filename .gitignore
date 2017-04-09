@@ -1,9 +1,13 @@
 # the main config file contains API keys
 # and should stay off github
-config.ini
+config.py
+
+# old config file
+# config.ini
 
 # compiled Python binaries
 *.pyc
+*.pyo
 
 # database files will be huge, ignore them
 *.db
