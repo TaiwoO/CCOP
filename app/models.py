@@ -1,7 +1,4 @@
-from flask_sqlalchemy import SQLAlchemy
-
-db = SQLAlchemy()
-
+from app import db
 
 class Crime (db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -18,12 +15,11 @@ class Crime (db.Model):
     latitude = db.Column(db.String(100), unique=False)
     longitude = db.Column(db.String(100), unique=False)
 
-    # def __init__(self):
-    #     pass
-
+    # this tells python how to print a crime object
     def __repr__(self):
-        return " Not sure what goes here yet"
+        return str(self.id) + ', ' + self.description
 
+    # used by the endpoints to convert crime object into JSON
     @property
     def serialize(self):
         return{

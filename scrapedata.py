@@ -1,29 +1,14 @@
-# CURRENTLY:
-# 	reads the config file
-#	pulls the most recent data from the endpoints
-# PLANNED:
-
-
-import sys
-sys.path.insert(0, "../")  # allow importing code from root
-sys.path.insert(0, "../utils")
-
 from datetime import datetime
 
 import api_interface as api
-import config_interface as cfg
-
-from app import app, db, Crime, Arrest
-
-# TODO: add exception handling?
-
+from app import app, db, models
 
 # read crimes using api.getCrime
 # write the new crimes to the database
 
-def updateCrimes(parser):
+def updateCrimes():
 
-    crimes = api.getCrime(parser)
+    crimes = api.getCrime()
 
     with app.app_context():
         for crime in crimes:
@@ -31,9 +16,7 @@ def updateCrimes(parser):
         db.session.commit()
 
 if __name__ == "__main__":
-
-    config = cfg.readConfig()
-    updateCrimes(config)
+    updateCrimes()
 
     # db_url = "mysql://" + config.get("sql","admin_un") + ':' + config.get("sql","admin_pw") + '@' + config.get("sql","host") + '/' + config.get("sql","db_name")
     # engine = create_engine(db_url, echo=True)

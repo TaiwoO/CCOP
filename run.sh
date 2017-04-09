@@ -1,3 +1,3 @@
-# run the environment and the app
+#!/bin/bash
 source ccop_env/bin/activate
-python3 app.py
+./run.py
