@@ -28,7 +28,8 @@ def pulldata(url):
 
 # takes in a street address, city, and state
 # returns a dictionary containing the latitude and longitude of the address
-# returns the empty dictionary if geocoding failed
+# returns the empty dictionary if connecting to the geocoding API fails
+# returns the center of MoCo if the street address cannot be resolved
 def geocode(street, city, state):
     # replace spaces with plus symbols
     street = street.replace(' ', '+')
@@ -41,7 +42,7 @@ def geocode(street, city, state):
     if(data["results"] == []):
         # sometimes geocoding doesn't work because the address was typed in wrong
         # in this case, put the crime in the middle of the county
-        location = {'lng': -77.2405, 'lat': 39.1547}
+        location = {'lat': -77.2405, 'lng': 39.1547}
     else:
         # sloppy, yes, but this is how you get the lat and long with a single line of code
         location = data["results"][0]["geometry"]["location"] if (data != []) else {}
@@ -49,11 +50,9 @@ def geocode(street, city, state):
 
 
 def getCrime():
-    # get info from config
-    #API_url = parser.get("crime", "url")
-    #from_datetime = parser.get("crime", "last_updated")
-
     # from_datetime = '2017-01-01T12:00:00.000000'
+    # TODO: replace this with a method that looks up the most recent
+    # record in the db
     from_datetime = CRIME_LAST_UPDATED
     to_datetime = datetime.now().isoformat('T')
 
@@ -99,8 +98,5 @@ def getCrime():
         offset += ENDPOINT_BUFFER_SIZE
         records = pulldata(CRIME_URL + query + limit +
                                "&$offset=" + str(offset))
-
-    # update the config 
-    CRIME_LAST_UPDATED = to_datetime
 
     return clean_data
