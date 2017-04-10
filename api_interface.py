@@ -4,8 +4,6 @@ import requests
 import json
 from datetime import datetime
 
-# from app import app
-
 from app.models import Crime
 from app.models import Arrest
 
@@ -15,7 +13,12 @@ from config import CRIME_URL
 from config import ARREST_URL
 from config import ENDPOINT_BUFFER_SIZE
 from config import OLDEST_CRIME_DATETIME
-from config import CRIME_LAST_UPDATED
+from config import OLDEST_ARREST_DATETIME
+from config import SQLALCHEMY_DATABASE_URI
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.sql.expression import func
 
 # runs a get request at the provided url
 # returns the json from the API if the request succeeds
@@ -28,7 +31,8 @@ def pulldata(url):
 
 # takes in a street address, city, and state
 # returns a dictionary containing the latitude and longitude of the address
-# returns the empty dictionary if geocoding failed
+# returns the empty dictionary if connecting to the geocoding API fails
+# returns the center of MoCo if the street address cannot be resolved
 def geocode(street, city, state):
     # replace spaces with plus symbols
     street = street.replace(' ', '+')
@@ -41,20 +45,52 @@ def geocode(street, city, state):
     if(data["results"] == []):
         # sometimes geocoding doesn't work because the address was typed in wrong
         # in this case, put the crime in the middle of the county
-        location = {'lng': -77.2405, 'lat': 39.1547}
+        location = {'lat': -77.2405, 'lng': 39.1547}
     else:
         # sloppy, yes, but this is how you get the lat and long with a single line of code
         location = data["results"][0]["geometry"]["location"] if (data != []) else {}
     return location
 
-
+# takes either the Crime or Arrest model as input
+# returns a datetime string of the most recent record listed in the db
+def readMostRecentRecord(model):
+    try:
+        # sqlalchemy object-relational mapping engine
+        engine = create_engine(SQLALCHEMY_DATABASE_URI, echo=False)
+        # this object generates sessions for connecting to the db
+        Session = sessionmaker(bind=engine)
+        # this is how you get a session from the sessionmaker
+        session = Session()
+        
+        if(model == Crime):
+            # this returns a sqlalchemy query object
+            query_object = session.query(func.max(Crime.dispatch))
+        elif(model == Arrest):
+            # TODO make sure the Arrest.date field matches the Arrest model
+            query_object = session.query(func.max(Arrest.date))
+        else:
+            return "don't do that"
+        
+        # the query method returns a list of tuples
+        # in this case, there is only one tuple in the list
+        # and that tuple contains only one value
+        most_recent_time = query_object[0][0]
+        
+        # always close db session when you're done with them
+        session.close()
+    except:
+        # this is the lazy way out of checking that the db exists
+        # and that the query executed successfully
+        if(model == Crime):
+            most_recent_time = OLDEST_CRIME_DATETIME
+        elif(model == Arrest):
+            most_recent_time = OLDEST_ARREST_DATETIME
+        else
+            return "don't do that"
+    return most_recent_time
+    
 def getCrime():
-    # get info from config
-    #API_url = parser.get("crime", "url")
-    #from_datetime = parser.get("crime", "last_updated")
-
-    # from_datetime = '2017-01-01T12:00:00.000000'
-    from_datetime = CRIME_LAST_UPDATED
+    from_datetime = readMostRecentRecord(Crime)
     to_datetime = datetime.now().isoformat('T')
 
     # build the query and pull records from API
@@ -99,8 +135,5 @@ def getCrime():
         offset += ENDPOINT_BUFFER_SIZE
         records = pulldata(CRIME_URL + query + limit +
                                "&$offset=" + str(offset))
-
-    # update the config 
-    CRIME_LAST_UPDATED = to_datetime
 
     return clean_data
