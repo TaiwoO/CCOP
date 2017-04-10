@@ -4,8 +4,6 @@ import requests
 import json
 from datetime import datetime
 
-# from app import app
-
 from app.models import Crime
 from app.models import Arrest
 
@@ -15,7 +13,12 @@ from config import CRIME_URL
 from config import ARREST_URL
 from config import ENDPOINT_BUFFER_SIZE
 from config import OLDEST_CRIME_DATETIME
-from config import CRIME_LAST_UPDATED
+from config import OLDEST_ARREST_DATETIME
+from config import SQLALCHEMY_DATABASE_URI
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.sql.expression import func
 
 # runs a get request at the provided url
 # returns the json from the API if the request succeeds
@@ -48,12 +51,46 @@ def geocode(street, city, state):
         location = data["results"][0]["geometry"]["location"] if (data != []) else {}
     return location
 
-
+# takes either the Crime or Arrest model as input
+# returns a datetime string of the most recent record listed in the db
+def readMostRecentRecord(model):
+    try:
+        # sqlalchemy object-relational mapping engine
+        engine = create_engine(SQLALCHEMY_DATABASE_URI, echo=False)
+        # this object generates sessions for connecting to the db
+        Session = sessionmaker(bind=engine)
+        # this is how you get a session from the sessionmaker
+        session = Session()
+        
+        if(model == Crime):
+            # this returns a sqlalchemy query object
+            query_object = session.query(func.max(Crime.dispatch))
+        elif(model == Arrest):
+            # TODO make sure the Arrest.date field matches the Arrest model
+            query_object = session.query(func.max(Arrest.date))
+        else:
+            return "don't do that"
+        
+        # the query method returns a list of tuples
+        # in this case, there is only one tuple in the list
+        # and that tuple contains only one value
+        most_recent_time = query_object[0][0]
+        
+        # always close db session when you're done with them
+        session.close()
+    except:
+        # this is the lazy way out of checking that the db exists
+        # and that the query executed successfully
+        if(model == Crime):
+            most_recent_time = OLDEST_CRIME_DATETIME
+        elif(model == Arrest):
+            most_recent_time = OLDEST_ARREST_DATETIME
+        else
+            return "don't do that"
+    return most_recent_time
+    
 def getCrime():
-    # from_datetime = '2017-01-01T12:00:00.000000'
-    # TODO: replace this with a method that looks up the most recent
-    # record in the db
-    from_datetime = CRIME_LAST_UPDATED
+    from_datetime = readMostRecentRecord(Crime)
     to_datetime = datetime.now().isoformat('T')
 
     # build the query and pull records from API
