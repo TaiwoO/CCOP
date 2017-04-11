@@ -4,6 +4,7 @@ import requests
 import json
 from datetime import datetime
 
+from app import app, db
 from app.models import Crime
 from app.models import Arrest
 
@@ -54,33 +55,19 @@ def geocode(street, city, state):
 # takes either the Crime or Arrest model as input
 # returns a datetime string of the most recent record listed in the db
 def readMostRecentRecord(model):
-    try:
-        # sqlalchemy object-relational mapping engine
-        engine = create_engine(SQLALCHEMY_DATABASE_URI, echo=False)
-        # this object generates sessions for connecting to the db
-        Session = sessionmaker(bind=engine)
-        # this is how you get a session from the sessionmaker
-        session = Session()
-        
+    with app.app_context():
         if(model == Crime):
             # this returns a sqlalchemy query object
-            query_object = session.query(func.max(Crime.dispatch))
+            query_object = db.session.query(func.max(Crime.dispatch))
         elif(model == Arrest):
             # TODO make sure the Arrest.date field matches the Arrest model
-            query_object = session.query(func.max(Arrest.date))
+            query_object = db.session.query(func.max(Arrest.date))
         else:
             return "don't do that"
-        
-        # the query method returns a list of tuples
-        # in this case, there is only one tuple in the list
-        # and that tuple contains only one value
-        most_recent_time = query_object[0][0]
-        
-        # always close db session when you're done with them
-        session.close()
-    except:
-        # this is the lazy way out of checking that the db exists
-        # and that the query executed successfully
+    
+    most_recent_time = query_object[0][0]
+    # db is empty
+    if(most_recent_time == None):
         if(model == Crime):
             most_recent_time = OLDEST_CRIME_DATETIME
         elif(model == Arrest):
