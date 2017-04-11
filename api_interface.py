@@ -85,7 +85,7 @@ def readMostRecentRecord(model):
             most_recent_time = OLDEST_CRIME_DATETIME
         elif(model == Arrest):
             most_recent_time = OLDEST_ARREST_DATETIME
-        else
+        else:
             return "don't do that"
     return most_recent_time
     
