@@ -2,22 +2,22 @@ from app import db
 
 class Crime (db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    dispatch = db.Column(db.String(100), unique=False)
-    start = db.Column(db.String(100), unique=False)
-    street = db.Column(db.String(100), unique=False)
-    city = db.Column(db.String(100), unique=False)
-    state = db.Column(db.String(100), unique=False)
-    zip = db.Column(db.String(100), unique=False)
-    crime_class = db.Column(db.String(100), unique=False)
+    dispatch = db.Column(db.DateTime, unique=False)
+    start = db.Column(db.DateTime, index=True, unique=False)
+    street = db.Column(db.String(70), unique=False)
+    city = db.Column(db.String(50), unique=False)
+    state = db.Column(db.String(2), unique=False)
+    zip = db.Column(db.String(10), unique=False)
+    crime_class = db.Column(db.String(10), index=True, unique=False)
     description = db.Column(db.String(100), unique=False)
-    agency = db.Column(db.String(100), unique=False)
-    district = db.Column(db.String(100), unique=False)
-    latitude = db.Column(db.String(100), unique=False)
-    longitude = db.Column(db.String(100), unique=False)
+    agency = db.Column(db.String(10), index=True, unique=False)
+    district = db.Column(db.String(50), unique=False)
+    latitude = db.Column(db.Float, index=True, unique=False)
+    longitude = db.Column(db.Float, index=True, unique=False)
 
     # this tells python how to print a crime object
     def __repr__(self):
-        return str(self.id) + ', ' + self.description
+        return str(self.id) + ': ' + self.description
 
     # used by the endpoints to convert crime object into JSON
     @property
@@ -40,9 +40,30 @@ class Crime (db.Model):
 
 class Arrest(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-
-    # def __init__(self):
-    #     pass
+    first = db.Column(db.String(50), unique=False)
+    last = db.Column(db.String(50), unique=False)
+    middle = db.Column(db.String(50), unique=False)
+    date = db.Column(db.DateTime, unique=False)
+    latitude = db.Column(db.Float, index=True, unique=False)
+    longitude = db.Column(db.Float, index=True, unique=False)
+    street = db.Column(db.String(70), unique=False)
+    city = db.Column(db.String(50), unique=False)
+    state = db.Column(db.String(2), unique=False)
 
     def __repr__(self):
-        return " Not sure what goes here yet"
+        return str(self.id) + ': ' + self.last + ', ' + self.first
+
+    @property
+    def serialize(self):
+        return{
+            'first': self.first,
+            'last': self.last,
+            'middle': self.middle,
+            'date': self.date,
+            'latitude': self.latitude,
+            'longitude': self.longitude,
+            'street': self.street,
+            'city': self.city,
+            'state': self.state,
+        }
+

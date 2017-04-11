@@ -16,6 +16,7 @@ from config import ENDPOINT_BUFFER_SIZE
 from config import OLDEST_CRIME_DATETIME
 from config import OLDEST_ARREST_DATETIME
 from config import SQLALCHEMY_DATABASE_URI
+from config import DATETIME_PARSE_STRING
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -92,8 +93,8 @@ def getCrime():
     # page through api records and clean the data
     while(len(records) > 0):
         for record in records:
-            dispatch = record["date"]
-            start = record["start_date"]
+            dispatch = datetime.strptime(record["date"],DATETIME_PARSE_STRING)
+            start = datetime.strptime(record["start_date"],DATETIME_PARSE_STRING)
             street = record["location"]
             city = record["city"]
             state = record["state"]
