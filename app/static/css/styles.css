@@ -1,4 +1,3 @@
-
 /*======================TITLE BAR==============================*/
 
 .navbar {
@@ -181,4 +180,11 @@
     #nav-side-menu .menu-list .menu-content {
         display: block;
     }
+}
+
+/*=========TIME SLIDER STUFF==========*/
+.ui-slider-horizontal {
+    margin: auto;
+    height: 8px;
+    width: 200px;
 }

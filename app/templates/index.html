@@ -2,9 +2,9 @@
 <html lang="en">
 
 <head>
-    {% include 'includes/header.html' %}
-    <meta charset="UTF-8">
-    <title>CCOP</title>
+  {% include 'includes/header.html' %}
+  <meta charset="UTF-8">
+  <title>CCOP</title>
 </head>
 
 <body>
@@ -30,24 +30,13 @@
         <div class="menu-list">
             <ul id="menu-content" class="menu-content collapse out">
 
-
-                <!--Choose Dataset-->
-                <li data-toggle="collapse" data-target="#dataset" class="collapsed">
-                    <a href="#"><i class=""></i> Choose Dataset <span class="arrow"></span></a>
-                </li>
-                <ul class="sub-menu collapse" id="dataset">
-                    <li>Crime <input id="crime-checkbox" type="checkbox"> </li>
-                    <li>Arrest <input id="arrest-checkbox" type="checkbox"> </li>
-                </ul>
-
                 <!--Choose Cities-->
-                <li data-toggle="collapse" data-target="#cities" class="collapsed">
+		<li data-toggle="collapse" data-target="#cities" class="collapsed">
                     <a href="#"><i class=""></i> Select Cities <span class="arrow"></span></a>
                 </li>
                 <ul class="sub-menu collapse" id="cities">
-                    <li class="active"><a href="#">Rockville</a></li>
-                    <li><a href="#">Takoma park</a></li>
-
+                  <li>Rockville <input id="ci1-checkbox" type="checkbox"></li>
+                  <li>Takoma park <input id="ci2-checkbox" type="checkbox"></li>
                 </ul>
 
                 <!--Choose Crime-->
@@ -55,11 +44,14 @@
                     <a href="#"><i class=""></i> Filter By Crime <span class="arrow"></span></a>
                 </li>
                 <ul class="sub-menu collapse" id="crime">
-                    <li>Larcenty</li>
-                    <li>Murder</li>
-                    <li>Tresspassing</li>
+                    <li>Larcenty <input id="cr1-checkbox" type="checkbox"></li>
+                    <li>Murder <input id="cr2-checkbox" type="checkbox"></li>
+                    <li>Tresspassing <input id="cr3-checkbox" type="checkbox"></li>
                 </ul>
             </ul>
+
+
+	    <div id="slider-range"></div>
         </div>
     </div>
 

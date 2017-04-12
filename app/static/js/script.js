@@ -1,6 +1,3 @@
-
-
-
 // Open and close the side nav bar
 $(document).ready(function () {
     $('#side-nav-btn').click(function () {
@@ -8,6 +5,23 @@ $(document).ready(function () {
         $('#nav-side-menu').animate({ width: sideNavWidth }, 10);
     });
 });
+
+$(document).ready(function () {
+    $( function() {
+	$( "#slider-range" ).slider({
+	    orientation: "horizontal",
+	    range: true,
+	    min: 0,
+	    max: 100,
+	    values: [ 0, 100 ],
+	    change: function( event, ui ) {
+		console.log($("slider-range").slider("values", 0));
+		console.log($("slider-range").slider("values", 1));
+	    }
+	});
+    } );
+});
+
 
 //makes a map
 //googlemaps automatically calls this
@@ -75,3 +89,4 @@ function initApp() {
 initApp()
 
 console.log("SCRIPT WORKING!!")
+
