@@ -6,8 +6,9 @@ $(document).ready(function () {
     });
 });
 
+//timeline slider functionality
 $(document).ready(function () {
-    $( function() {
+    $(function() {
 	$( "#slider-range" ).slider({
 	    orientation: "horizontal",
 	    range: true,
@@ -15,8 +16,8 @@ $(document).ready(function () {
 	    max: 100,
 	    values: [ 0, 100 ],
 	    change: function( event, ui ) {
-		console.log($("slider-range").slider("values", 0));
-		console.log($("slider-range").slider("values", 1));
+		var vals = ui.values;
+		console.log(vals);
 	    }
 	});
     } );
