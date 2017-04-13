@@ -1,16 +1,30 @@
 //Writen by Robert Bradshaw
 //implements the map view
 
-// Google map automatically calls this function
-export function initMap()
+
+//googlemaps automatically calls this
+function initMap()
 {
-    var uluru = { lat: -25.363, lng: 131.044 };
+    var minZoomLevel = 10;
+    var uluru = { lat: 39.154743, lng: -77.240515 };
     var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 4,
+        zoom: minZoomLevel,
         center: uluru
     });
-    var marker = new google.maps.Marker({
+ 
+    
+    new google.maps.Marker({
         position: uluru,
         map: map
     });
 }
+
+//limits the map
+function limitMap(map, minZoomLevel)
+{
+    var opt = { minZoom: minZoomLevel};
+    map.setOptions(opt);
+    map.fitBounds();
+}
+//Filter markers
+//get data from selected marker

@@ -1,6 +1,3 @@
-
-
-
 // Open and close the side nav bar
 $(document).ready(function () {
     $('#side-nav-btn').click(function () {
@@ -9,20 +6,18 @@ $(document).ready(function () {
     });
 });
 
-//makes a map
-//googlemaps automatically calls this
-function initMap()
+/*function initMap()
 {
     var uluru = { lat: 39.154743, lng: -77.240515 };
     var map = new google.maps.Map(document.getElementById('map'), {
         zoom: 12,
         center: uluru
     });
-    var marker = new google.maps.Marker({
+    new google.maps.Marker({
         position: uluru,
         map: map
     });
-}
+}*/
 
 //makes the charts
 function initPieChart() {
@@ -69,6 +64,7 @@ function initBarChart(labels, data)
 
 function initApp() {
     //initBarChart()
+    initMap();//isnt being called automatically?
     initPieChart();
 }
 
