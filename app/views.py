@@ -1,7 +1,7 @@
-from flask import render_template
+from flask import render_template, jsonify, request
 from app import app
-from flask import jsonify
 from app.models import Crime
+
 # The home route
 @app.route('/')
 @app.route('/index')
