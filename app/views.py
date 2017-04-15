@@ -26,4 +26,4 @@ def crime_by_case(case_number):
 @app.route('/crime/city/<city>', methods=['GET'])
 def crime_by_city(city):
     crimes = Crime.query.filter_by(city=city).all()
-return jsonify(crimes=[i.serialize for i in crimes])
+    return jsonify(crimes=[i.serialize for i in crimes])

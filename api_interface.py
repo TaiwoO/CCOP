@@ -120,10 +120,6 @@ def getCrime():
             this_crime = Crime(dispatch=dispatch, start=start, street=street, city=city, state=state, zip=zip, crime_class=crime_class,
                                description=description, agency=agency, district=district, latitude=latitude, longitude=longitude)
             clean_data.append(this_crime)
-
-        offset += ENDPOINT_BUFFER_SIZE
-        records = pulldata(CRIME_URL + query + limit +
-                               "&$offset=" + str(offset))
         
         # write clean data to database
         with app.app_context():
@@ -132,4 +128,61 @@ def getCrime():
             db.session.commit()
         totalCrimes += len(clean_data)
 
+        offset += ENDPOINT_BUFFER_SIZE
+        records = pulldata(CRIME_URL + query + limit + "&$offset=" + str(offset))
+
     return totalCrimes
+
+def getArrest():
+    from_datetime = readMostRecentRecord(Arrest)
+    to_datetime = datetime.now().isoformat('T')
+
+    # build the query and pull records from API
+    offset = 0
+    query = "?$where=arrest_date > '" + from_datetime + \
+        "' and arrest_date <='" + to_datetime + "'"
+    limit = "&$limit=" + str(ENDPOINT_BUFFER_SIZE)
+    records = pulldata(ARREST_URL + query + limit)
+    
+    totalArrests = 0
+    # page through api records and clean the data
+    while(len(records) > 0):
+        clean_data = []
+        for record in records:
+            date = datetime.strptime(record["arrest_date"],DATETIME_PARSE_STRING)
+            street = record["street"]
+            city = record["city"]
+            state = record["state"]
+            offense = record["offense"]
+            first = record["first_name"]
+            last = record["last_name"]
+            
+            location = geocode(street, city, state)
+            latitude = location["lat"]
+            longitude = location["lng"]
+
+            if("middle_name" not in record):
+                middle = None
+            else:
+                middle = record["middle_name"]
+
+            this_arrest = Arrest(date=date, street=street, city=city, state=state, offense=offense, first=first, middle=middle, last=last, latitude=latitude, longitude=longitude)
+            clean_data.append(this_arrest) 
+        
+        # write clean data to database
+        with app.app_context():
+            for arrest in clean_data:
+                db.session.add(arrest)
+            db.session.commit()
+        totalArrests += len(clean_data)
+
+        offset += ENDPOINT_BUFFER_SIZE
+        records = pulldata(CRIME_URL + query + limit + "&$offset=" + str(offset))
+
+    return totalArrests
+
+if __name__ == "__main__":
+    print("Fetching new crime data. This operation may take a while...")
+    print("{0} crimes added to the database".format(getCrime()))
+    print("Fetching new arrest data. This operation WILL take a while...")
+    print("{0} crimes added to the database".format(getArrest()))
