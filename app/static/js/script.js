@@ -19,4 +19,5 @@ function initApp() {
 
 initApp()
 getJson("/crime")
+
 console.log("SCRIPT WORKING!!")
