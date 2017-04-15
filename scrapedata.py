@@ -7,13 +7,8 @@ from app import app, db, models
 # write the new crimes to the database
 
 def updateCrimes():
-
-    crimes = api.getCrime()
-
-    with app.app_context():
-        for crime in crimes:
-            db.session.add(crime)
-        db.session.commit()
+    print("{0} crimes added to the database".format(api.getCrime()))
+    
 
 if __name__ == "__main__":
     updateCrimes()

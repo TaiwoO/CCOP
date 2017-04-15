@@ -66,9 +66,9 @@ def readMostRecentRecord(model):
         else:
             return "don't do that"
     
-    most_recent_time = query_object[0][0]
+    most_recent_time = str(query_object[0][0])
     # db is empty
-    if(most_recent_time == None):
+    if(most_recent_time == 'None'):
         if(model == Crime):
             most_recent_time = OLDEST_CRIME_DATETIME
         elif(model == Arrest):
@@ -88,10 +88,11 @@ def getCrime():
     limit = "&$limit=" + str(ENDPOINT_BUFFER_SIZE)
     records = pulldata(CRIME_URL + query + limit)
 
-    clean_data = []
-
+    
+    totalCrimes = 0
     # page through api records and clean the data
     while(len(records) > 0):
+        clean_data = []
         for record in records:
             dispatch = datetime.strptime(record["date"],DATETIME_PARSE_STRING)
             start = datetime.strptime(record["start_date"],DATETIME_PARSE_STRING)
@@ -123,5 +124,12 @@ def getCrime():
         offset += ENDPOINT_BUFFER_SIZE
         records = pulldata(CRIME_URL + query + limit +
                                "&$offset=" + str(offset))
+        
+        # write clean data to database
+        with app.app_context():
+            for crime in clean_data:
+                db.session.add(crime)
+            db.session.commit()
+        totalCrimes += len(clean_data)
 
-    return clean_data
+    return totalCrimes
