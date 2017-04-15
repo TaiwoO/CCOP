@@ -15,3 +15,6 @@ config.py
 # the setup script creates a virtual environment
 # don't upload the environment to github
 ccop_env/*
+
+# swap files
+*.swp
