@@ -7,6 +7,8 @@ from datetime import datetime
 from app import app, db
 from app.models import Crime
 from app.models import Arrest
+from exceptions import RequestLimitReachedError
+from exceptions import PartialDataError
 
 from config import MAPS_API_KEY
 from config import GEOCODE_URL
@@ -44,13 +46,21 @@ def geocode(street, city, state):
     query = GEOCODE_URL + "?address=" + street + ',' + city + ',' + state + "&key=" + MAPS_API_KEY
     data = pulldata(query)
 
-    if(data["results"] == []):
+    query_status = data["status"]
+    
+    if(query_status == "OK"):
+        # sloppy, yes, but this is how you get the lat and long with a single line of code
+        location = data["results"][0]["geometry"]["location"] if (data != []) else {}
+    elif(query_status == "ZERO_RESULTS"):
         # sometimes geocoding doesn't work because the address was typed in wrong
         # in this case, put the crime in the middle of the county
         location = {'lat': -77.2405, 'lng': 39.1547}
+    elif(query_status == "OVER_QUERY_LIMIT"):
+        raise RequestLimitReachedError()
     else:
-        # sloppy, yes, but this is how you get the lat and long with a single line of code
-        location = data["results"][0]["geometry"]["location"] if (data != []) else {}
+        # handle other error types by geocoding to default location
+        location = {'lat': -77.2405, 'lng': 39.1547}
+
     return location
 
 # takes either the Crime or Arrest model as input
@@ -86,7 +96,8 @@ def getCrime():
     query = "?$where=start_date > '" + from_datetime + \
         "' and start_date <='" + to_datetime + "'"
     limit = "&$limit=" + str(ENDPOINT_BUFFER_SIZE)
-    records = pulldata(CRIME_URL + query + limit)
+    order = "&$order=start_date"
+    records = pulldata(CRIME_URL + query + order + limit)
 
     
     totalCrimes = 0
@@ -106,9 +117,12 @@ def getCrime():
 
             # some of the records don't have geolocations
             if("geolocation" not in record):
-                location = geocode(street, city, state)
-                latitude = location["lat"]
-                longitude = location["lng"]
+                try:
+                    location = geocode(street, city, state)
+                    latitude = location["lat"]
+                    longitude = location["lng"]
+                except RequestLimitReachedError:
+                    raise PartialDataError(totalCrimes, "crime")
             else:
                 latitude = record["geolocation"]["coordinates"][0]
                 longitude = record["geolocation"]["coordinates"][1]
@@ -142,7 +156,8 @@ def getArrest():
     query = "?$where=arrest_date > '" + from_datetime + \
         "' and arrest_date <='" + to_datetime + "'"
     limit = "&$limit=" + str(ENDPOINT_BUFFER_SIZE)
-    records = pulldata(ARREST_URL + query + limit)
+    order = "&$order=arrest_date"
+    records = pulldata(ARREST_URL + query + order + limit)
     
     totalArrests = 0
     # page through api records and clean the data
@@ -157,7 +172,11 @@ def getArrest():
             first = record["first_name"]
             last = record["last_name"]
             
-            location = geocode(street, city, state)
+            try:
+                location = geocode(street, city, state)
+            except RequestLimitReachedError as err:
+                print(err.message)
+                raise PartialDataError(totalArrests, "arrest")
             latitude = location["lat"]
             longitude = location["lng"]
 
@@ -182,7 +201,11 @@ def getArrest():
     return totalArrests
 
 if __name__ == "__main__":
-    print("Fetching new crime data. This operation may take a while...")
-    print("{0} crimes added to the database".format(getCrime()))
-    print("Fetching new arrest data. This operation WILL take a while...")
-    print("{0} crimes added to the database".format(getArrest()))
+    try:
+        print("Fetching new crime data. This operation may take a while...")
+        print("{0} crimes added to the database".format(getCrime()))
+        print("Fetching new arrest data. This operation WILL take a while...")
+        print("{0} crimes added to the database".format(getArrest()))
+    except PartialDataError as err:
+        print(err.message)
+        print("now quitting...")
