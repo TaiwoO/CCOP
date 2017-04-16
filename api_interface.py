@@ -18,7 +18,8 @@ from config import ENDPOINT_BUFFER_SIZE
 from config import OLDEST_CRIME_DATETIME
 from config import OLDEST_ARREST_DATETIME
 from config import SQLALCHEMY_DATABASE_URI
-from config import DATETIME_PARSE_STRING
+from config import CRIME_DATETIME_PARSE_STRING
+from config import ARREST_DATETIME_PARSE_STRING
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -35,13 +36,13 @@ def pulldata(url):
 
 # takes in a street address, city, and state
 # returns a dictionary containing the latitude and longitude of the address
-# returns the empty dictionary if connecting to the geocoding API fails
-# returns the center of MoCo if the street address cannot be resolved
+# returns the center of MoCo if the street address cannot be resolved or if connecting to the geocoding API fails
+# raises RequestLimitReachedError if api requests have been exhausted
 def geocode(street, city, state):
     # replace spaces with plus symbols
-    street = street.replace(' ', '+')
-    city = city.replace(' ', '+')
-    state = state.replace(' ', '+')
+    street = street.replace(' ', '+') if (street is not None) else ""
+    city = city.replace(' ', '+') if (city is not None) else ""
+    state = state.replace(' ', '+') if (state is not None) else ""
 
     query = GEOCODE_URL + "?address=" + street + ',' + city + ',' + state + "&key=" + MAPS_API_KEY
     data = pulldata(query)
@@ -50,7 +51,7 @@ def geocode(street, city, state):
     
     if(query_status == "OK"):
         # sloppy, yes, but this is how you get the lat and long with a single line of code
-        location = data["results"][0]["geometry"]["location"] if (data != []) else {}
+        location = data["results"][0]["geometry"]["location"]
     elif(query_status == "ZERO_RESULTS"):
         # sometimes geocoding doesn't work because the address was typed in wrong
         # in this case, put the crime in the middle of the county
@@ -99,38 +100,38 @@ def getCrime():
     order = "&$order=start_date"
     records = pulldata(CRIME_URL + query + order + limit)
 
-    
     totalCrimes = 0
     # page through api records and clean the data
     while(len(records) > 0):
         clean_data = []
         for record in records:
-            dispatch = datetime.strptime(record["date"],DATETIME_PARSE_STRING)
-            start = datetime.strptime(record["start_date"],DATETIME_PARSE_STRING)
-            street = record["location"]
-            city = record["city"]
-            state = record["state"]
-            description = record["narrative"]
-            crime_class = record["incident_type"]
-            agency = record["agency"]
-            district = record["police_district_number"]
+            dispatch = datetime.strptime(record["date"],CRIME_DATETIME_PARSE_STRING) if ("date" in record) else None
+            start = datetime.strptime(record["start_date"],CRIME_DATETIME_PARSE_STRING) if ("start_date" in record) else None
+            street = record["location"] if ("location" in record) else None
+            city = record["city"] if ("city" in record) else None
+            state = record["state"] if ("state" in record) else None
+            description = record["narrative"] if ("narrative" in record) else None
+            crime_class = record["incident_type"] if ("incident_type" in record) else None
+            agency = record["agency"] if ("agency" in record) else None
+            district = record["police_district_number"] if ("police_district_number" in record) else None
 
-            # some of the records don't have geolocations
-            if("geolocation" not in record):
+            if("geolocation" in record and "latitude" in record["geolocation"] and "longitude" in record["geolocation"]):
+                # latitude and longitude are provided
+                latitude = record["geolocation"]["latitude"]
+                longitude = record["geolocation"]["longitude"]
+                
+            # record missing lat/long info
+            else:
                 try:
                     location = geocode(street, city, state)
                     latitude = location["lat"]
                     longitude = location["lng"]
                 except RequestLimitReachedError:
                     raise PartialDataError(totalCrimes, "crime")
-            else:
-                latitude = record["geolocation"]["coordinates"][0]
-                longitude = record["geolocation"]["coordinates"][1]
             
             # some zip codes missing, too
             zip = record["zip_code"] if ("zip_code" in record) else 0
 
-            
             this_crime = Crime(dispatch=dispatch, start=start, street=street, city=city, state=state, zip=zip, crime_class=crime_class,
                                description=description, agency=agency, district=district, latitude=latitude, longitude=longitude)
             clean_data.append(this_crime)
@@ -143,9 +144,10 @@ def getCrime():
         totalCrimes += len(clean_data)
 
         offset += ENDPOINT_BUFFER_SIZE
-        records = pulldata(CRIME_URL + query + limit + "&$offset=" + str(offset))
+        records = pulldata(CRIME_URL + query + order + limit + "&$offset=" + str(offset))
 
     return totalCrimes
+
 
 def getArrest():
     from_datetime = readMostRecentRecord(Arrest)
@@ -164,13 +166,13 @@ def getArrest():
     while(len(records) > 0):
         clean_data = []
         for record in records:
-            date = datetime.strptime(record["arrest_date"],DATETIME_PARSE_STRING)
-            street = record["street"]
-            city = record["city"]
-            state = record["state"]
-            offense = record["offense"]
-            first = record["first_name"]
-            last = record["last_name"]
+            date = datetime.strptime(record["arrest_date"],ARREST_DATETIME_PARSE_STRING)
+            street = record["street"] if ("street" in record) else None
+            city = record["city"] if ("city" in record) else None
+            state = record["state"] if ("state" in record) else None
+            offense = record["offense"] if ("offense" in record) else None
+            first = record["first_name"] if ("first_name" in record) else None
+            last = record["last_name"] if ("last_name" in record) else None
             
             try:
                 location = geocode(street, city, state)
@@ -196,16 +198,16 @@ def getArrest():
         totalArrests += len(clean_data)
 
         offset += ENDPOINT_BUFFER_SIZE
-        records = pulldata(CRIME_URL + query + limit + "&$offset=" + str(offset))
+        records = pulldata(CRIME_URL + query + order + limit + "&$offset=" + str(offset))
 
     return totalArrests
 
 if __name__ == "__main__":
     try:
-        print("Fetching new crime data. This operation may take a while...")
-        print("{0} crimes added to the database".format(getCrime()))
         print("Fetching new arrest data. This operation WILL take a while...")
         print("{0} crimes added to the database".format(getArrest()))
+        print("Fetching new crime data. This operation may take a while...")
+        print("{0} crimes added to the database".format(getCrime()))
     except PartialDataError as err:
         print(err.message)
         print("now quitting...")
