@@ -70,7 +70,7 @@ def readMostRecentRecord(model):
     with app.app_context():
         if(model == Crime):
             # this returns a sqlalchemy query object
-            query_object = db.session.query(func.max(Crime.dispatch))
+            query_object = db.session.query(func.max(Crime.start))
         elif(model == Arrest):
             # TODO make sure the Arrest.date field matches the Arrest model
             query_object = db.session.query(func.max(Arrest.date))
@@ -78,6 +78,7 @@ def readMostRecentRecord(model):
             return "don't do that"
     
     most_recent_time = str(query_object[0][0])
+
     # db is empty
     if(most_recent_time == 'None'):
         if(model == Crime):
@@ -126,7 +127,8 @@ def getCrime():
                     location = geocode(street, city, state)
                     latitude = location["lat"]
                     longitude = location["lng"]
-                except RequestLimitReachedError:
+                except RequestLimitReachedError as err:
+                    print(err.message)
                     raise PartialDataError(totalCrimes, "crime")
             
             # some zip codes missing, too
