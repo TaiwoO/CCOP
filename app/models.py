@@ -44,7 +44,7 @@ class Arrest(db.Model):
     last = db.Column(db.String(50), unique=False)
     middle = db.Column(db.String(50), unique=False, nullable=True)
     offense = db.Column(db.String(100), unique=False)
-    date = db.Column(db.DateTime, unique=False)
+    date = db.Column(db.DateTime, index=True, unique=False)
     latitude = db.Column(db.Float, index=True, unique=False)
     longitude = db.Column(db.Float, index=True, unique=False)
     street = db.Column(db.String(70), unique=False)
