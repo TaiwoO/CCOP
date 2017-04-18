@@ -1,6 +1,14 @@
+# description of Crime and Arrest Models
+# used by SQLAlchemy (object-relational mapper)
+# to smoothly convert python objects to and from
+# database records.  These models are also used to
+# build the database schema
+
 from app import db
 
+# definition of Crime object
 class Crime (db.Model):
+    # fields
     id = db.Column(db.Integer, primary_key=True)
     dispatch = db.Column(db.DateTime, unique=False)
     start = db.Column(db.DateTime, index=True, unique=False)
@@ -38,7 +46,9 @@ class Crime (db.Model):
             'agency': self.agency
         }
 
+# definition of Arrest object
 class Arrest(db.Model):
+    # fields
     id = db.Column(db.Integer, primary_key=True)
     first = db.Column(db.String(50), unique=False)
     last = db.Column(db.String(50), unique=False)
@@ -51,9 +61,11 @@ class Arrest(db.Model):
     city = db.Column(db.String(50), unique=False)
     state = db.Column(db.String(2), unique=False)
 
+    # how an Arrest is printed
     def __repr__(self):
         return str(self.id) + ': ' + self.last + ', ' + self.first
 
+    # used by the endpoint to convert object to JSON
     @property
     def serialize(self):
         return{
