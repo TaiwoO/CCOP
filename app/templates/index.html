@@ -2,9 +2,9 @@
 <html lang="en">
 
 <head>
-    {% include 'includes/header.html' %}
-    <meta charset="UTF-8">
-    <title>CCOP</title>
+  {% include 'includes/header.html' %}
+  <meta charset="UTF-8">
+  <title>CCOP</title>
 </head>
 
 <body>
@@ -30,36 +30,34 @@
         <div class="menu-list">
             <ul id="menu-content" class="menu-content collapse out">
 
-
-                <!--Choose Dataset-->
-                <li data-toggle="collapse" data-target="#dataset" class="collapsed">
-                    <a href="#"><i class=""></i> Choose Dataset <span class="arrow"></span></a>
-                </li>
-                <ul class="sub-menu collapse" id="dataset">
-                    <li>Crime <input id="crime-checkbox" type="checkbox"> </li>
-                    <li>Arrest <input id="arrest-checkbox" type="checkbox"> </li>
-                </ul>
-
                 <!--Choose Cities-->
-                <li data-toggle="collapse" data-target="#cities" class="collapsed">
-                    <a href="#"><i class=""></i> Select Cities <span class="arrow"></span></a>
+		<li data-toggle="collapse" data-target="#cities" class="collapsed">
+                    <a href="#"><i class=""></i>Select Cities <span class="arrow"></span></a>
                 </li>
                 <ul class="sub-menu collapse" id="cities">
-                    <li class="active"><a href="#">Rockville</a></li>
-                    <li><a href="#">Takoma park</a></li>
-
+                  <li>Rockville <input id="ci1-checkbox" type="checkbox"></li>
+                  <li>Takoma park <input id="ci2-checkbox" type="checkbox"></li>
                 </ul>
 
                 <!--Choose Crime-->
                 <li data-toggle="collapse" data-target="#crime" class="collapsed">
-                    <a href="#"><i class=""></i> Filter By Crime <span class="arrow"></span></a>
+                    <a href="#"><i class=""></i>Filter By Crime <span class="arrow"></span></a>
                 </li>
                 <ul class="sub-menu collapse" id="crime">
-                    <li>Larcenty</li>
-                    <li>Murder</li>
-                    <li>Tresspassing</li>
+                    <li>Larcenty <input id="cr1-checkbox" type="checkbox"></li>
+                    <li>Murder <input id="cr2-checkbox" type="checkbox"></li>
+                    <li>Tresspassing <input id="cr3-checkbox" type="checkbox"></li>
                 </ul>
-            </ul>
+
+		<!--timeline-->
+		<li data-toggle="collapse" data-target="#timeline" class="collapsed">
+                    <a href="#"><i class=""></i>Timeline<span class="arrow"></span></a>
+                </li>
+                <ul class="sub-menu collapse in" id="timeline">
+		  <br>
+		  <div id="slider-range"></div>
+                </ul>
+            </ul>	    
         </div>
     </div>
 
@@ -82,13 +80,74 @@
                     <!--<canvas id="chart"></canvas>-->
                 </div>
             </div>
-
         </div>
 
-        <div id="result">yo</div>
-    </div>
-
-    {% include 'includes/scripts.html' %}
+	<br>
+	
+	<div class="tablerow">
+	  <div class="col md-10">
+	    <div class="scroller">
+	      <table class="table table-hover">
+		<thead>
+		  <tr>
+		    <th>Firstname</th>
+		    <th>Lastname</th>
+		    <th>Email</th>
+		  </tr>
+		</thead>
+		<tbody>
+		  <tr>
+		    <td>John</td>
+		    <td>Doe</td>
+		    <td>john@example.com</td>
+		  </tr>
+		  <tr>
+		    <td>Mary</td>
+		    <td>Moe</td>
+		    <td>mary@example.com</td>
+		  </tr>
+		  <tr>
+		    <td>July</td>
+		    <td>Dooley</td>
+		    <td>july@example.com</td>
+		  </tr>
+		  <tr>
+		    <td>July</td>
+		    <td>Dooley</td>
+		    <td>july@example.com</td>
+		  </tr>
+		  <tr>
+		    <td>July</td>
+		    <td>Dooley</td>
+		    <td>july@example.com</td>
+		  </tr>
+		  <tr>
+		    <td>July</td>
+		    <td>Dooley</td>
+		    <td>july@example.com</td>
+		  </tr>
+		  <tr>
+		    <td>July</td>
+		    <td>Dooley</td>
+		    <td>july@example.com</td>
+		  </tr>
+		  <tr>
+		    <td>July</td>
+		    <td>Dooley</td>
+		    <td>july@example.com</td>
+		  </tr>
+		  <tr>
+		    <td>July</td>
+		    <td>Dooley</td>
+		    <td>july@example.com</td>
+		  </tr>
+		</tbody>
+	      </table>
+	    </div>
+	  </div>
+	</div>
+</div>
+  {% include 'includes/scripts.html' %}
 </body>
 
 </html>

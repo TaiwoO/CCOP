@@ -1,3 +1,11 @@
+
+function initBarChart(labels, data)
+{
+
+}
+
+//make a table
+
 // Open and close the side nav bar
 $(document).ready(function () {
     $('#side-nav-btn').click(function () {
@@ -21,3 +29,5 @@ initApp()
 getJson("/crime")
 
 console.log("SCRIPT WORKING!!")
+console.log("IS IT, THO?")
+
