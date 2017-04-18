@@ -1,4 +1,4 @@
-s// Open and close the side nav bar
+// Open and close the side nav bar
 $(document).ready(function () {
     $('#side-nav-btn').click(function (){
 	var sideNavWidth = $("#nav-side-menu").width() == 0 ? "400px" : "0px";
