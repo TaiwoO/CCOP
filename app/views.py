@@ -22,15 +22,18 @@ def index():
 
 # crime endpoint
 '''
+sample url:
+http://localhost:5000/crime?min_time=2017-04-01T15:47:13.657Z&max_time=2017-04-19T15:47:13.657Z&bounds=38.955865,-77.232668,39.1646,-77.055342
+
 url query args:
 datetimes are the javascript Date.toJSON() format
-min_time=2017-04-19T15:47:13.657Z
+min_time=2017-04-01T15:47:13.657Z
 max_time=2017-04-19T15:47:13.657Z
 
 lat/long query args:
 uses google.maps.Map.getBounds().toUrlValue() format,
 that is: lat_lo,lng_lo,lat_hi,lng_hi
-bounds=41.584307,-73.705627,42.412995,-70.294373
+bounds=38.955865,-77.232668,39.1646,-77.055342
 '''
 # potentially have a field for limiting the number of records
 @app.route('/crime', methods=['GET'])
