@@ -29,33 +29,20 @@ def crimes():
 
 
 # endpoint gives the max and min datetime values in the database
-@app.route('/crime/range', methods=['GET'])
-def crime_range():
+# this is for both crime and arrest data
+@app.route('/range', methods=['GET'])
+def range():
     with app.app_context():
-        query_object = db.session.query(func.min(Crime.start))
-        min_datetime = str(query_object[0][0])
+        minCrime = db.session.query(func.min(Crime.start))[0][0]
+        minArrest = db.session.query(func.min(Arrest.date))[0][0]
 
-        # db is empty
-        if(min_datetime == 'None'):
-            return "crime table is empty"
+        if(minCrime == None and minArrest == None):
+            return "the database is empty"
+        
+        maxCrime = db.session.query(func.max(Crime.start))[0][0]
+        maxArrest = db.session.query(func.max(Arrest.date))[0][0]
 
-        query_object = db.session.query(func.max(Crime.start))
-        max_datetime = str(query_object[0][0])
-    
-    return jsonify(min=min_datetime,max=max_datetime)
-
-# endpoint gives the max and min datetime values in the database
-@app.route('/arrest/range', methods=['GET'])
-def arrest_range():
-    with app.app_context():
-        query_object = db.session.query(func.min(Arrest.date))
-        min_datetime = str(query_object[0][0])
-
-        # db is empty
-        if(min_datetime == 'None'):
-            return "arrest table is empty"
-
-        query_object = db.session.query(func.max(Arrest.date))
-        max_datetime = str(query_object[0][0])
+        min_datetime = str(min(minCrime, minArrest))
+        max_datetime = str(max(maxCrime, maxArrest))
     
     return jsonify(min=min_datetime,max=max_datetime)
