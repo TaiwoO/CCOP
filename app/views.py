@@ -45,10 +45,10 @@ def crimes():
     # query the db
     crimes = Crime.query.filter(Crime.start >= min_time) \
                         .filter(Crime.start <= max_time) \
-                        .filter(Crime.latitude > bounds[0] \
-                        .filter(Crime.latitude < bounds[2] \
-                        .filter(Crime.longitude > bounds[1] \
-                        .filter(Crime.longitude < bounds[3] \
+                        .filter(Crime.latitude > bounds[0]) \
+                        .filter(Crime.latitude < bounds[2]) \
+                        .filter(Crime.longitude > bounds[1]) \
+                        .filter(Crime.longitude < bounds[3]) \
                         .limit(MAX_CRIMES).all()
     return jsonify(crimes=[i.serialize for i in crimes])
 
