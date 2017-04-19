@@ -21,14 +21,13 @@ function initMap()
 //Gets markers onto map
 function updateMarkers(map)
 {
-
     var url = "/crime?min_time=2017-04-01T15:47:13.657Z&max_time=2017-04-19T15:47:13.657Z&bounds=38.955865,-77.232668,39.1646,-77.055342";
     $.getJSON($SCRIPT_ROOT+url,{}, function (data){
         console.log(data);
 	var crimes = data.crimes;
 	var crime, latLng;
 	for(i in crimes){
-	    console.log(i);
+	    //console.log(i);
 	    crime = crimes[i];
 	    latLng = new google.maps.LatLng(crime.latitude, crime.longitude);
 	    
