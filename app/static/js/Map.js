@@ -22,12 +22,12 @@ function initMap()
 function updateMarkers(map)
 {
     $.getJSON($SCRIPT_ROOT + "/crime",{}, function (data) {
-        console.log(data);
+        //console.log(data);
         //work with the data here
 	var crimes = data.crimes;
 	var crime, latLng;
 	for(i in crimes){
-	    console.log(i);
+	    //console.log(i);
 	    crime = crimes[i];
 	    latLng = new google.maps.LatLng(crime.latitude, crime.longitude);
 	    

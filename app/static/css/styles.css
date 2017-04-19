@@ -26,9 +26,13 @@
     padding: 20px;
 }
 
-#chart {
-    height: 100%;
-    width: 100%;
+ .chart, .carousel , .carousel-inner {
+    height: 100% !important;
+    width: 100% !important;
+}
+
+.carousel-control.left, .carousel-control.right {
+    background-image: none;
 }
 
 

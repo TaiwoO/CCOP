@@ -2,152 +2,175 @@
 <html lang="en">
 
 <head>
-  {% include 'includes/header.html' %}
-  <meta charset="UTF-8">
-  <title>CCOP</title>
+	{% include 'includes/header.html' %}
+	<meta charset="UTF-8">
+	<title>CCOP</title>
 </head>
 
 <body>
-    <!-- Top Navbar -->
-    <nav class="navbar navbar-default navbar-fixed">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#">CCOP</a>
-        </div>
+	<!-- Top Navbar -->
+	<nav class="navbar navbar-default navbar-fixed">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="#">CCOP</a>
+		</div>
 
-        <!--Filter Button-->
-        <button id="side-nav-btn" class="btn btn-default btn-lg pull-right" type="button">Filter
+		<!--Filter Button-->
+		<button id="side-nav-btn" class="btn btn-default btn-lg pull-right" type="button">Filter
             <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
         </button>
-    </nav>
+	</nav>
 
-    <!--Clearfix after a pull-right-->
-    <div class="clearfix"></div>
+	<!--Clearfix after a pull-right-->
+	<div class="clearfix"></div>
 
-    <!--Side Navigation Bar-->
-    <div id="nav-side-menu">
-        <div class="brand">Filters</div>
+	<!--Side Navigation Bar-->
+	<div id="nav-side-menu">
+		<div class="brand">Filters</div>
 
-        <div class="menu-list">
-            <ul id="menu-content" class="menu-content collapse out">
+		<div class="menu-list">
+			<ul id="menu-content" class="menu-content collapse out">
 
-                <!--Choose Cities-->
-		<li data-toggle="collapse" data-target="#cities" class="collapsed">
-                    <a href="#"><i class=""></i>Select Cities <span class="arrow"></span></a>
-                </li>
-                <ul class="sub-menu collapse" id="cities">
-                  <li>Rockville <input id="ci1-checkbox" type="checkbox"></li>
-                  <li>Takoma park <input id="ci2-checkbox" type="checkbox"></li>
-                </ul>
+				<!--Choose Cities-->
+				<li data-toggle="collapse" data-target="#cities" class="collapsed">
+					<a href="#"><i class=""></i>Select Cities <span class="arrow"></span></a>
+				</li>
+				<ul class="sub-menu collapse" id="cities">
+					<li>Rockville <input id="ci1-checkbox" type="checkbox"></li>
+					<li>Takoma park <input id="ci2-checkbox" type="checkbox"></li>
+				</ul>
 
-                <!--Choose Crime-->
-                <li data-toggle="collapse" data-target="#crime" class="collapsed">
-                    <a href="#"><i class=""></i>Filter By Crime <span class="arrow"></span></a>
-                </li>
-                <ul class="sub-menu collapse" id="crime">
-                    <li>Larcenty <input id="cr1-checkbox" type="checkbox"></li>
-                    <li>Murder <input id="cr2-checkbox" type="checkbox"></li>
-                    <li>Tresspassing <input id="cr3-checkbox" type="checkbox"></li>
-                </ul>
+				<!--Choose Crime-->
+				<li data-toggle="collapse" data-target="#crime" class="collapsed">
+					<a href="#"><i class=""></i>Filter By Crime <span class="arrow"></span></a>
+				</li>
+				<ul class="sub-menu collapse" id="crime">
+					<li>Larcenty <input id="cr1-checkbox" type="checkbox"></li>
+					<li>Murder <input id="cr2-checkbox" type="checkbox"></li>
+					<li>Tresspassing <input id="cr3-checkbox" type="checkbox"></li>
+				</ul>
 
-		<!--timeline-->
-		<li data-toggle="collapse" data-target="#timeline" class="collapsed">
-                    <a href="#"><i class=""></i>Timeline<span class="arrow"></span></a>
-                </li>
-                <ul class="sub-menu collapse in" id="timeline">
-		  <br>
-		  <div id="slider-range"></div>
-                </ul>
-            </ul>	    
-        </div>
-    </div>
-
-
-    <!--Main Content-->
-    <div id="main">
-        <div class="row">
-
-            <!--Map View-->
-            <div class="col-md-7">
-                <div class="map-wrapper">
-                    <div id="map"></div>
-                </div>
-            </div>
-
-            <!--Chart View-->
-            <div class="col-md-5">
-                <div class="chart-wrapper">
-                    <div id="chart"></div>
-                    <!--<canvas id="chart"></canvas>-->
-                </div>
-            </div>
-        </div>
-
-	<br>
-	
-	<div class="tablerow">
-	  <div class="col md-10">
-	    <div class="scroller">
-	      <table class="table table-hover">
-		<thead>
-		  <tr>
-		    <th>Firstname</th>
-		    <th>Lastname</th>
-		    <th>Email</th>
-		  </tr>
-		</thead>
-		<tbody>
-		  <tr>
-		    <td>John</td>
-		    <td>Doe</td>
-		    <td>john@example.com</td>
-		  </tr>
-		  <tr>
-		    <td>Mary</td>
-		    <td>Moe</td>
-		    <td>mary@example.com</td>
-		  </tr>
-		  <tr>
-		    <td>July</td>
-		    <td>Dooley</td>
-		    <td>july@example.com</td>
-		  </tr>
-		  <tr>
-		    <td>July</td>
-		    <td>Dooley</td>
-		    <td>july@example.com</td>
-		  </tr>
-		  <tr>
-		    <td>July</td>
-		    <td>Dooley</td>
-		    <td>july@example.com</td>
-		  </tr>
-		  <tr>
-		    <td>July</td>
-		    <td>Dooley</td>
-		    <td>july@example.com</td>
-		  </tr>
-		  <tr>
-		    <td>July</td>
-		    <td>Dooley</td>
-		    <td>july@example.com</td>
-		  </tr>
-		  <tr>
-		    <td>July</td>
-		    <td>Dooley</td>
-		    <td>july@example.com</td>
-		  </tr>
-		  <tr>
-		    <td>July</td>
-		    <td>Dooley</td>
-		    <td>july@example.com</td>
-		  </tr>
-		</tbody>
-	      </table>
-	    </div>
-	  </div>
+				<!--timeline-->
+				<li data-toggle="collapse" data-target="#timeline" class="collapsed">
+					<a href="#"><i class=""></i>Timeline<span class="arrow"></span></a>
+				</li>
+				<ul class="sub-menu collapse in" id="timeline">
+					<br>
+					<div id="slider-range"></div>
+				</ul>
+			</ul>
+		</div>
 	</div>
-</div>
-  {% include 'includes/scripts.html' %}
+
+
+	<!--Main Content-->
+	<div id="main">
+		<div class="row">
+
+			<!--Map View-->
+			<div class="col-md-7">
+				<div class="map-wrapper">
+					<!--<div id="map"></div>-->
+				</div>
+			</div>
+
+			<!--Chart View-->
+			<div class="col-md-5">
+				<div class="chart-wrapper">
+					<!--Slides container for various charts-->
+					<div id="chartCarousel" class="carousel slide" data-interval="false">
+
+						<!--Wrapper for slides-->
+						<div class="carousel-inner" role="listbox">
+							<div class="item active chart">
+								<div id="piechart" class="chart"></div>
+							</div>
+							<div class="item chart">
+								<div id="histogram" class="chart"></div>
+							</div>
+						</div>
+
+						<!-- Left and right controls for carousel -->
+						<a class="left carousel-control" href="#chartCarousel" role="button" data-slide="prev">
+							<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+							<span class="sr-only">Previous</span>
+						</a>
+						<a class="right carousel-control" href="#chartCarousel" role="button" data-slide="next">
+							<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+							<span class="sr-only">Next</span>
+						</a>
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<br>
+
+		<div class="tablerow">
+			<div class="col md-10">
+				<div class="scroller">
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th>Firstname</th>
+								<th>Lastname</th>
+								<th>Email</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>John</td>
+								<td>Doe</td>
+								<td>john@example.com</td>
+							</tr>
+							<tr>
+								<td>Mary</td>
+								<td>Moe</td>
+								<td>mary@example.com</td>
+							</tr>
+							<tr>
+								<td>July</td>
+								<td>Dooley</td>
+								<td>july@example.com</td>
+							</tr>
+							<tr>
+								<td>July</td>
+								<td>Dooley</td>
+								<td>july@example.com</td>
+							</tr>
+							<tr>
+								<td>July</td>
+								<td>Dooley</td>
+								<td>july@example.com</td>
+							</tr>
+							<tr>
+								<td>July</td>
+								<td>Dooley</td>
+								<td>july@example.com</td>
+							</tr>
+							<tr>
+								<td>July</td>
+								<td>Dooley</td>
+								<td>july@example.com</td>
+							</tr>
+							<tr>
+								<td>July</td>
+								<td>Dooley</td>
+								<td>july@example.com</td>
+							</tr>
+							<tr>
+								<td>July</td>
+								<td>Dooley</td>
+								<td>july@example.com</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	{% include 'includes/scripts.html' %}
 </body>
 
 </html>
