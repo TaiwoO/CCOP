@@ -1,10 +1,4 @@
 
-function initBarChart(labels, data)
-{
-
-}
-
-//make a table
 
 // Return raw JSON from endpoint
 function getJson(endpoint) {
@@ -14,11 +8,11 @@ function getJson(endpoint) {
 }
 
 function initApp() {
-    initPieChart();
+    initCharts();
 }
 
 initApp()
-getJson("/crime")
+//getJson("/crime")
 
 console.log("SCRIPT WORKING!!")
 console.log("IS IT, THO?")

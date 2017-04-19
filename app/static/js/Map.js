@@ -11,23 +11,24 @@ function initMap()
         zoom: minZoomLevel,
         center: uluru
     });
-
-    updateMarkers(map);
+    var minTime = "min_time=2017-04-01T15:47:13.657";
+    var maxTime = "max_time=2017-04-19T15:47:13.657";
+    updateMarkers(map,minTime,maxTime);
               
     //limitMap(map,minZoomLevel);
     
 }
 
 //Gets markers onto map
-function updateMarkers(map)
+function updateMarkers(map,minTime,maxTime)
 {
-    $.getJSON($SCRIPT_ROOT + "/crime",{}, function (data) {
+    var url = "/crime?"+minTime+"Z&"+maxTime+"Z&bounds=38.955865,-77.232668,39.1646,-77.055342";
+    $.getJSON($SCRIPT_ROOT+url,{}, function (data){
         console.log(data);
-        //work with the data here
 	var crimes = data.crimes;
 	var crime, latLng;
 	for(i in crimes){
-	    console.log(i);
+	    //console.log(i);
 	    crime = crimes[i];
 	    latLng = new google.maps.LatLng(crime.latitude, crime.longitude);
 	    
@@ -36,6 +37,25 @@ function updateMarkers(map)
 		map: map,
 		title: "Crime\n"+crime.description+"\n"+crime.dispatch+"\n"+crime.street,
 		label: "C"
+	    });
+	}
+    });
+
+    url = "/arrest?"+minTime+"Z&"+maxTime+"Z&bounds=38.955865,-77.232668,39.1646,-77.055342";
+    $.getJSON($SCRIPT_ROOT+url,{}, function (data){
+        console.log(data);
+	var arrests = data.arrests;
+	var arrest, latLng;
+	for(i in arrests){
+	    console.log(i);
+	    arrest = arrests[i];
+	    latLng = new google.maps.LatLng(arrest.latitude, arrest.longitude);
+	    
+	    var marker = new google.maps.Marker({
+		position:latLng,
+		map: map,
+		title: "Arrest\n"+arrest.date+"\n"+arrest.street,
+		label: "A"
 	    });
 	}
     });
