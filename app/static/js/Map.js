@@ -11,17 +11,18 @@ function initMap()
         zoom: minZoomLevel,
         center: uluru
     });
-
-    updateMarkers(map);
+    var minTime = "min_time=2017-04-01T15:47:13.657";
+    var maxTime = "max_time=2017-04-19T15:47:13.657";
+    updateMarkers(map,minTime,maxTime);
               
     //limitMap(map,minZoomLevel);
     
 }
 
 //Gets markers onto map
-function updateMarkers(map)
+function updateMarkers(map,minTime,maxTime)
 {
-    var url = "/crime?min_time=2017-04-01T15:47:13.657Z&max_time=2017-04-19T15:47:13.657Z&bounds=38.955865,-77.232668,39.1646,-77.055342";
+    var url = "/crime?"+minTime+"Z&"+maxTime+"Z&bounds=38.955865,-77.232668,39.1646,-77.055342";
     $.getJSON($SCRIPT_ROOT+url,{}, function (data){
         console.log(data);
 	var crimes = data.crimes;
@@ -40,7 +41,7 @@ function updateMarkers(map)
 	}
     });
 
-    url = "/arrest?min_time=2017-04-01T15:47:13.657Z&max_time=2017-04-19T15:47:13.657Z&bounds=38.955865,-77.232668,39.1646,-77.055342";
+    url = "/arrest?"+minTime+"Z&"+maxTime+"Z&bounds=38.955865,-77.232668,39.1646,-77.055342";
     $.getJSON($SCRIPT_ROOT+url,{}, function (data){
         console.log(data);
 	var arrests = data.arrests;
