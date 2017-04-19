@@ -6,23 +6,30 @@ $(document).ready(function () {
     });
 });
 
+
+var minDate = Date.parse("2017-03-15 14:08:00");
+var maxDate = Date.parse("2017-04-16 20:00:00");
+
 //timeline slider functionality
 $(document).ready(function () {
     $(function() {
 	$( "#slider-range" ).slider({
 	    orientation: "horizontal",
 	    range: true,
-	    min: 0,
-	    max: 100,
-	    values: [ 0, 100 ],
+	    min: minDate,
+	    max: maxDate,
+	    values: [ minDate, maxDate ],
 	    slide: function( event, ui){
-		if ((ui.values[0] + 1) >= ui.values[1]) {
+		//prevents complete overlap of slider handles
+		if ((ui.values[0] + 10) >= ui.values[1]) {
 		    return false;
 		}
 	    },
 	    change: function( event, ui ){
 		var vals = ui.values;
 		console.log(vals);
+		console.log(Date(ui.values[0]));
+		console.log(Date(ui.values[1]));
 	    }
 	});
     } );
