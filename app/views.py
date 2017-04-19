@@ -1,10 +1,17 @@
 # defines web routing for the app
 # i.e. which urls display which information
 
+from datetime import datetime
+
 from flask import render_template, jsonify, request
 from sqlalchemy import func
+
 from app import app, db
 from app.models import Crime, Arrest
+
+from config import JS_DATETIME_PARSE_STRING
+from config import MAX_CRIMES
+from config import MAX_ARRESTS
 
 # The home route (homepage)
 @app.route('/')
@@ -14,18 +21,36 @@ def index():
 
 
 # crime endpoint
-# URL query format has not yet been defined
-# likely we'll need filtering on time, lat/long, and crime types
+'''
+url query args:
+datetimes are the javascript Date.toJSON() format
+min_time=2017-04-19T15:47:13.657Z
+max_time=2017-04-19T15:47:13.657Z
+
+lat/long query args:
+uses google.maps.Map.getBounds().toUrlValue() format,
+that is: lat_lo,lng_lo,lat_hi,lng_hi
+bounds=41.584307,-73.705627,42.412995,-70.294373
+'''
 # potentially have a field for limiting the number of records
 @app.route('/crime', methods=['GET'])
 def crimes():
-    min_time = request.args.get('min_time')
-    max_time = request.args.get('max_time')
+    # parse time slider values
+    min_time = datetime.strptime(request.args.get('min_time'),JS_DATETIME_PARSE_STRING)
+    max_time = datetime.strptime(request.args.get('max_time'),JS_DATETIME_PARSE_STRING)
 
-    return jsonify([min_time, max_time])
+    # parse map boundary values
+    bounds = [float(i) for i in request.args.get('bounds').split(',')]
 
-    # crimes = Crime.query.limit(5).all()
-    # return jsonify(crimes=[i.serialize for i in crimes])
+    # query the db
+    crimes = Crime.query.filter(Crime.start >= min_time) \
+                        .filter(Crime.start <= max_time) \
+                        .filter(Crime.latitude > bounds[0] \
+                        .filter(Crime.latitude < bounds[2] \
+                        .filter(Crime.longitude > bounds[1] \
+                        .filter(Crime.longitude < bounds[3] \
+                        .limit(MAX_CRIMES).all()
+    return jsonify(crimes=[i.serialize for i in crimes])
 
 
 # endpoint gives the max and min datetime values in the database
