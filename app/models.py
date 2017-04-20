@@ -75,6 +75,7 @@ class Arrest(db.Model):
             'date': self.date,
             'latitude': self.latitude,
             'longitude': self.longitude,
+            'offense': self.offense,
             'street': self.street,
             'city': self.city,
             'state': self.state,
