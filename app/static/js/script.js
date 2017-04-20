@@ -16,4 +16,3 @@ initApp()
 
 console.log("SCRIPT WORKING!!")
 console.log("IS IT, THO?")
-
