@@ -1,5 +1,6 @@
-//written by 
+//written by Taiwo
 //will implement the Chart
+// This file construct the charts of the application
 
 function initCharts() {
     // Load the Visualization API and the corechart package.
@@ -17,27 +18,26 @@ function initCharts() {
 // draws it.
 function drawPieChart() {
 
-    // Create the data table.
-    var data = new google.visualization.DataTable();
-    data.addColumn('string', 'Topping');
-    data.addColumn('number', 'Slices');
-    data.addRows([
-        ['Mushrooms', 3],
-        ['Onions', 1],
-        ['Olives', 1],
-        ['Zucchini', 1],
-        ['Pepperoni', 2]
-    ]);
+    $.getJSON($SCRIPT_ROOT + "/crime/type", {}, function (result) {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Crime Type')
+        data.addColumn('number', 'frequency');
 
-    // Set chart options
-    var options = {
-        title: 'How Much Pizza I Ate Last Night',
-        pieHole: 0.4
-    };
+        var crimeTypes = result.crime_types;
+        console.log(crimeTypes)
+        for (type in crimeTypes) {
+            data.addRow([type, crimeTypes[type]]);
+        }
 
-    // Instantiate and draw our chart, passing in some options.
-    var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-    chart.draw(data, options);
+        // Set chart options
+        var options = {
+            title: 'Crime types',
+            pieHole: 0.4
+        };
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        chart.draw(data, options);
+    });
 }
 
 
