@@ -113,28 +113,19 @@ def range():
 # TODO: adjust query result based on the map boundaries and time slider much like the crime endpoint
 @app.route('/crime/type', methods=['GET'])
 def crime_type():
-    limit = request.args.get('limit')
-    if limit:
-        crimes = Crime.query.limit(limit).all()
-    else:
-        crimes = Crime.query.limit(MAX_CRIMES).all()
 
     crime_types = {crime_type:0 for crime_type in CRIME_TYPES}  # Blank Normalized categories 
     
-    # Normalize all crime descriptions and calculate their frequency.
-    for crime in crimes:
-        normalized_category = get_normalized_category(crime.description)
-        crime_types[normalized_category] +=1
+    # Use all of our Nomalized crime type categories to match with the API's crime description
+    # Example: 'Assult': ["AGG", "ASSAULT"]
+    # "Assult" is a Normalized crime type and ["AGG", "ASSAULT"] are the prefixes for that crime type
+    not_categorized = Crime.query.count()
+    for crime_type, crime_prefixes in CRIME_TYPES.items():
+        # Get the total number of matches for a crime_type based on the prefixes
+        for prefix in crime_prefixes:
+            total_matches = Crime.query.filter(Crime.description.like("%"+prefix+"%")).count()
+            crime_types[crime_type] += total_matches
+            not_categorized -= total_matches
+    crime_types['Other'] = not_categorized
 
     return jsonify(crime_types = crime_types)
-
-# Helper function?? 
-# Converts a crime category to one of our Normaized categories
-def get_normalized_category(crime_category):
-  category = 'Other'
-  for crime_type, crime_prefixes in CRIME_TYPES.items():
-    for prefix in crime_prefixes:
-      if prefix in crime_category:
-        category = crime_type
-     
-  return category
