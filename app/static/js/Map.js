@@ -54,7 +54,7 @@ function updateMarkers(map,minTime,maxTime)
 	    var marker = new google.maps.Marker({
 		position:latLng,
 		map: map,
-		title: "Arrest\n"+arrest.date+"\n"+arrest.street,
+		title: "Arrest\n"+arrest.offense+"\n"+arrest.date+"\n"+arrest.street,
 		label: "A"
 	    });
 	}
