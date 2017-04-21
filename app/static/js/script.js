@@ -11,6 +11,9 @@ $(document).ready(function () {
     // enable the menu animations
     setupSidebarAnimation();
 
+    // setup chart view
+    initCharts();
+
     // look up the min and max dates for the range slider
     $.getJSON("http://localhost:5000/range", function(data){
 	    window.minDate = new Date(data["min"]);
@@ -21,7 +24,9 @@ $(document).ready(function () {
 
         // initialize the map, chart, and tabular views
         updateModules();
-    });    
+    });
+    
+    
 });
 
 
@@ -63,6 +68,8 @@ function updateModules(){
                 updateMarkers();
             }
 
+            // update the charts
+            drawPieChart(query);
             
 
         });

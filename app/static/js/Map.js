@@ -39,18 +39,11 @@ function initMap()
 // http://stackoverflow.com/questions/1544739/google-maps-api-v3-how-to-remove-all-markers
 function clearMarkers(){
     //console.log("clearMarkers called")
-    var keptMarkers = [];
     var bounds = window.map.getBounds();
     for (var i = 0; i < window.mapMarkers.length; i++) {
-        if(bounds.contains(window.mapMarkers[i].getPosition())){
-            // retain markers that are within the new map boundaries
-            keptMarkers.push(window.mapMarkers[i]);
-        } else {
-            // delete the ones that are outside the boundary
-            window.mapMarkers[i].setMap(null);
-        }
+        window.mapMarkers[i].setMap(null);
     }
-    window.mapMarkers = keptMarkers;
+    window.mapMarkers.length = 0;
 }
 
 
