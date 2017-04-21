@@ -3,6 +3,7 @@
 // This file construct the charts of the application
 
 function initCharts() {
+
     // Load the Visualization API and the corechart package.
     google.charts.load('current', { 'packages': ['corechart'] });
 
@@ -16,15 +17,20 @@ function initCharts() {
 // Callback that creates and populates a data table,
 // instantiates the pie chart, passes in the data and
 // draws it.
-function drawPieChart() {
+function drawPieChart(query) {
+    
+    //console.log(query);
 
-    $.getJSON($SCRIPT_ROOT + "/crime/type", {}, function (result) {
+    if(query === undefined)
+        query = "";
+
+    $.getJSON($SCRIPT_ROOT + "/crime/type" + query, {}, function (result) {
         var data = new google.visualization.DataTable();
         data.addColumn('string', 'Crime Type')
         data.addColumn('number', 'frequency');
 
         var crimeTypes = result.crime_types;
-        console.log(crimeTypes)
+        //console.log(crimeTypes)
         for (type in crimeTypes) {
             data.addRow([type, crimeTypes[type]]);
         }

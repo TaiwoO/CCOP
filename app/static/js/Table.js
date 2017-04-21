@@ -11,7 +11,7 @@ var arrestTable;
   http://legacy.datatables.net/usage/features
   https://datatables.net/reference/option/
 */
-$(document).ready(function() {
+function initTables(){
     crimeTable = $("#crimetable").DataTable({
 	"deferRender": true,
 	"bFilter": false,
@@ -29,7 +29,7 @@ $(document).ready(function() {
 	"scroller": true
     });
     
-});
+};
 
 //clear old rows and add new ones based on crime/arrest data passed in
 function updateTables(crimes, arrests){

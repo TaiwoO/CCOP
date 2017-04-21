@@ -113,17 +113,45 @@ def range():
 # TODO: adjust query result based on the map boundaries and time slider much like the crime endpoint
 @app.route('/crime/type', methods=['GET'])
 def crime_type():
+    noArgs = True
+    if(request.args.get('min_time') is not None):
+        noArgs = False
+        # parse time slider values
+        min_time = datetime.strptime(request.args.get('min_time'),JS_DATETIME_PARSE_STRING)
+        max_time = datetime.strptime(request.args.get('max_time'),JS_DATETIME_PARSE_STRING)
+
+        # parse map boundary values
+        bounds = [float(i) for i in request.args.get('bounds').split(',')]
 
     crime_types = {crime_type:0 for crime_type in CRIME_TYPES}  # Blank Normalized categories 
     
     # Use all of our Nomalized crime type categories to match with the API's crime description
     # Example: 'Assult': ["AGG", "ASSAULT"]
     # "Assult" is a Normalized crime type and ["AGG", "ASSAULT"] are the prefixes for that crime type
-    not_categorized = Crime.query.count()
+    if(noArgs):
+        not_categorized = Crime.query.count()
+    else:
+        not_categorized = Crime.query.filter(Crime.start >= min_time) \
+                                           .filter(Crime.start <= max_time) \
+                                           .filter(Crime.latitude > bounds[0]) \
+                                           .filter(Crime.latitude < bounds[2]) \
+                                           .filter(Crime.longitude > bounds[1]) \
+                                           .filter(Crime.longitude < bounds[3]) \
+                                           .count();
     for crime_type, crime_prefixes in CRIME_TYPES.items():
         # Get the total number of matches for a crime_type based on the prefixes
         for prefix in crime_prefixes:
-            total_matches = Crime.query.filter(Crime.description.like("%"+prefix+"%")).count()
+            if(not noArgs):
+                total_matches = Crime.query.filter(Crime.start >= min_time) \
+                                           .filter(Crime.start <= max_time) \
+                                           .filter(Crime.latitude > bounds[0]) \
+                                           .filter(Crime.latitude < bounds[2]) \
+                                           .filter(Crime.longitude > bounds[1]) \
+                                           .filter(Crime.longitude < bounds[3]) \
+                                           .filter(Crime.description.like("%"+prefix+"%")) \
+                                           .count()
+            else:
+                total_matches = Crime.query.filter(Crime.description.like("%"+prefix+"%")).count()
             crime_types[crime_type] += total_matches
             not_categorized -= total_matches
     crime_types['Other'] = not_categorized
