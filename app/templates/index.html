@@ -71,18 +71,14 @@
 
 			<!--Map View-->
 			<div class="col-md-7">
-			  <div>
-			    C = Crimes<br>
-			    A = Arrests
-			    </div>
 			  <div class="map-wrapper">
-					<div id="map"></div>
-				</div>
+			    <div id="map"></div>
+			  </div>
 			</div>
 
 			<!--Chart View-->
 			<div class="col-md-5">
-			  <br><br>
+			  
 				<div class="chart-wrapper">
 					<!--Slides container for various charts-->
 					<div id="chartCarousel" class="carousel slide" data-interval="false">
@@ -112,70 +108,33 @@
 			</div>
 
 		</div>
-
-		<br>
-
-		<div class="tablerow">
-			<div class="col md-10">
-				<div class="scroller">
-					<table class="table table-hover">
-						<thead>
-							<tr>
-								<th>Firstname</th>
-								<th>Lastname</th>
-								<th>Email</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>John</td>
-								<td>Doe</td>
-								<td>john@example.com</td>
-							</tr>
-							<tr>
-								<td>Mary</td>
-								<td>Moe</td>
-								<td>mary@example.com</td>
-							</tr>
-							<tr>
-								<td>July</td>
-								<td>Dooley</td>
-								<td>july@example.com</td>
-							</tr>
-							<tr>
-								<td>July</td>
-								<td>Dooley</td>
-								<td>july@example.com</td>
-							</tr>
-							<tr>
-								<td>July</td>
-								<td>Dooley</td>
-								<td>july@example.com</td>
-							</tr>
-							<tr>
-								<td>July</td>
-								<td>Dooley</td>
-								<td>july@example.com</td>
-							</tr>
-							<tr>
-								<td>July</td>
-								<td>Dooley</td>
-								<td>july@example.com</td>
-							</tr>
-							<tr>
-								<td>July</td>
-								<td>Dooley</td>
-								<td>july@example.com</td>
-							</tr>
-							<tr>
-								<td>July</td>
-								<td>Dooley</td>
-								<td>july@example.com</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
+		
+		<div class="col-xs-6">
+		  <h3 class="sub-header">Crimes</h3>
+		  <table id="crimetable" class="table table-hover">
+		    <thead>
+		      <tr>
+			<th>Offense</th>
+			<th>Dispatch Time</th>
+			<th>Address</th>
+		      </tr>
+		    </thead>
+		    <tbody>
+		    </tbody>
+		  </table>
+		</div>
+		<div class="col-xs-6">
+		  <h3 class="sub-header">Arrests</h3>
+		  <table id="arresttable" class="table table-hover">
+		    <thead>
+		      <tr>
+			<th>Time</th>
+			<th>Address</th>
+		      </tr>
+		    </thead>
+		    <tbody>
+		    </tbody>
+		  </table>
 		</div>
 	</div>
 	{% include 'includes/scripts.html' %}
