@@ -1,3 +1,16 @@
+/*
+  filtermenu.js contains functions pertaining to the interactive elements on the filter menu toggled by the filter button in the top-right of the interface.
+  
+  includes:
+  crimes
+  cities
+  timeline
+  ---with updated date divs for time range display
+
+
+*/
+
+
 // Open and close the side nav bar
 function setupSidebarAnimation(){
     $('#side-nav-btn').click(function (){
