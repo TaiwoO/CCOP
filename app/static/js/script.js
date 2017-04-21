@@ -14,6 +14,9 @@ $(document).ready(function () {
     // setup chart view
     initCharts();
 
+    // setup table view
+    initTables();
+
     // look up the min and max dates for the range slider
     $.getJSON("http://localhost:5000/range", function(data){
 	    window.minDate = new Date(data["min"]);
