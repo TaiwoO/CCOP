@@ -12,12 +12,32 @@
 <!--Google Charts JS-->
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
+<!--Google maps JS-->
+<!--Maybe don't put the key here.  We might be able to insert it as part of a template? Research needed-->
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6IOrmkUCZENIZkJiDRU-oyZBzn12zpWk&callback=initMap"></script>
 
 <!--Custom JS-->
-<script src="/static/js/Chart.js"></script>
-<script src="/static/js/Map.js"></script>
+
+
+<script type="text/javascript">
+    // global variables used across files
+    window.map;
+    window.minDate;
+    window.maxDate;
+    window.crimeJSON;
+    window.arrestJSON;
+    window.mapMarkers = [];
+    window.isDragging = false;  // diable map updates while user is dragging the map
+</script>
+
+
 <script src="/static/js/script.js"></script>
 <script src="/static/js/filtermenu.js"></script>
 
-<!--Google maps JS-->
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6IOrmkUCZENIZkJiDRU-oyZBzn12zpWk&callback=initMap"></script>
+
+<script src="/static/js/Chart.js"></script>
+<script src="/static/js/Map.js"></script>
+
+
+
+

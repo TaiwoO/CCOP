@@ -1,10 +1,10 @@
 // Open and close the side nav bar
-$(document).ready(function () {
+function setupSidebarAnimation(){
     $('#side-nav-btn').click(function (){
 	var sideNavWidth = $("#nav-side-menu").width() == 0 ? "400px" : "0px";
 	$('#nav-side-menu').animate({ width: sideNavWidth }, 10);
     });
-});
+}
 
 //functions zeroPad and formatDT for date formatting from
 //http://stackoverflow.com/questions/10466851/javascript-slider-that-scrolls-along-both-dates-and-times
@@ -23,33 +23,28 @@ function formatDT(__dt) {
     return year + '-' + month + '-' + date + ' ' + hours + ':' + minutes + ':' + seconds;
 }
 
-var minDateVal = 0;
-var maxDateVal = 0;
 
 var minDateString = "";
 var maxDateString = "";
 
+var minDateVal = 0;
+var maxDateVal = 0;
+
 //update date range values using values from sqlite db
 function updateDateBounds(){
-    $.getJSON("http://localhost:5000/range", function(data){
-	console.log("executing updateDateBounds");
-	minDateVal = Date.parse(data["min"])/1000;
-	maxDateVal = Date.parse(data["max"])/1000;
+	//console.log("executing updateDateBounds");
+	minDateVal = window.minDate/1000;
+	maxDateVal = window.maxDate/1000;
+
 	//initTimeline call is in here for synchronization purposes.
 	initTimeline();
-    });
-    return;
 }
-
-updateDateBounds();
 
 //initialize timeline slider and date range div(s) properties
 function initTimeline(){
-    minDateString = formatDT(new Date(minDateVal * 1000));
-    maxDateString = formatDT(new Date(maxDateVal * 1000));
-    
-    console.log(minDateString);
-    console.log(maxDateString);
+
+    minDateString = formatDT(window.minDate);
+    maxDateString = formatDT(window.maxDate);
     
     $('.slider-time1').html(minDateString);
     $('.slider-time2').html(maxDateString);
@@ -66,13 +61,16 @@ function initTimeline(){
 		step: 1,
 		values: [ minDateVal, maxDateVal ],
 		slide: function( event, ui){
-		    minDateString = formatDT(new Date(ui.values[0] * 1000));
+            minDateString = formatDT(new Date(ui.values[0] * 1000));
 		    maxDateString = formatDT(new Date(ui.values[1] * 1000));
 		    $('.slider-time1').html(minDateString);
 		    $('.slider-time2').html(maxDateString);
 		},
 		change: function( event, ui ){
-		    
+		    window.minDate = new Date(ui.values[0] * 1000);
+            window.maxDate = new Date(ui.values[1] * 1000);
+            //console.log(window.minDate);
+            //console.log(window.maxDate);
 		}
 	    });
 	} );

@@ -5,50 +5,81 @@
 //googlemaps automatically calls this
 function initMap()
 {
+    //console.log("initMap called");
+
     var minZoomLevel = 10;
-    var uluru = { lat: 39.154743, lng: -77.240515 };
-    var map = new google.maps.Map(document.getElementById('map'),{
+    var latLng = { lat: 39.154743, lng: -77.240515 };
+    window.map = new google.maps.Map(document.getElementById('map'),{
         zoom: minZoomLevel,
-        center: uluru
+        center: latLng,
+        scrollwheel: false,
+        streetViewControl: false
     });
-    var minTime = "min_time=2017-04-01T15:47:13.657";
-    var maxTime = "max_time=2017-04-19T15:47:13.657";
-    updateMarkers(map,minTime,maxTime);
-              
-    //limitMap(map,minZoomLevel);
-    
+
+    google.maps.event.addListenerOnce(map, 'bounds_changed', function() {
+        // runs once the map loads
+        updateMarkers();
+
+        google.maps.event.addListener(map, 'bounds_changed', function() {
+            // don't constantly update while user drags the map
+            if(!window.isDragging){
+                updateModules();
+            }
+        });
+    });
+
+    // track when the user is dragging
+    google.maps.event.addListener(map, 'dragstart', function(){window.isDragging = true;});
+    google.maps.event.addListener(map, 'dragend', function(){window.isDragging = false;});
+        
 }
 
+// clears markers from the map
+// stolen from stack overflow:
+// http://stackoverflow.com/questions/1544739/google-maps-api-v3-how-to-remove-all-markers
+function clearMarkers(){
+    //console.log("clearMarkers called")
+    var keptMarkers = [];
+    var bounds = window.map.getBounds();
+    for (var i = 0; i < window.mapMarkers.length; i++) {
+        if(bounds.contains(window.mapMarkers[i].getPosition())){
+            // retain markers that are within the new map boundaries
+            keptMarkers.push(window.mapMarkers[i]);
+        } else {
+            // delete the ones that are outside the boundary
+            window.mapMarkers[i].setMap(null);
+        }
+    }
+    window.mapMarkers = keptMarkers;
+}
+
+
 //Gets markers onto map
-function updateMarkers(map,minTime,maxTime)
+function updateMarkers()
 {
-    var url = "/crime?"+minTime+"Z&"+maxTime+"Z&bounds=38.955865,-77.232668,39.1646,-77.055342";
-    $.getJSON($SCRIPT_ROOT+url,{}, function (data){
-        console.log(data);
-	var crimes = data.crimes;
+    //console.log("updateMarkers called");
+    // clear out the old markers
+    clearMarkers();
+
 	var crime, latLng;
-	for(i in crimes){
+	for(i in window.crimeJSON){
 	    //console.log(i);
-	    crime = crimes[i];
+	    crime = window.crimeJSON[i];
 	    latLng = new google.maps.LatLng(crime.latitude, crime.longitude);
-	    
+
 	    var marker = new google.maps.Marker({
 		position:latLng,
 		map: map,
 		title: "Crime\n"+crime.description+"\n"+crime.dispatch+"\n"+crime.street,
 		label: "C"
 	    });
+        window.mapMarkers.push(marker);
+        
 	}
-    });
-
-    url = "/arrest?"+minTime+"Z&"+maxTime+"Z&bounds=38.955865,-77.232668,39.1646,-77.055342";
-    $.getJSON($SCRIPT_ROOT+url,{}, function (data){
-        console.log(data);
-	var arrests = data.arrests;
-	var arrest, latLng;
-	for(i in arrests){
-	    console.log(i);
-	    arrest = arrests[i];
+   
+	var arrest;
+	for(i in window.arrestJSON){
+	    arrest = window.arrestJSON[i];
 	    latLng = new google.maps.LatLng(arrest.latitude, arrest.longitude);
 	    
 	    var marker = new google.maps.Marker({
@@ -57,8 +88,11 @@ function updateMarkers(map,minTime,maxTime)
 		title: "Arrest\n"+arrest.offense+"\n"+arrest.date+"\n"+arrest.street,
 		label: "A"
 	    });
+        //marker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png');
 	}
-    });
+
+
+    
 }
 
 //limits the map
