@@ -65,7 +65,7 @@ function updateModules(){
             
             window.crimeJSON = crimeData.crimes;
             window.arrestJSON = arrestData.arrests;
-
+	    
             // reload the markers if the map has already been loaded
             if(mapLoaded !== undefined){
                 updateMarkers();
@@ -73,8 +73,8 @@ function updateModules(){
 
             // update the charts
             drawPieChart(query);
-            
 
+	    updateTables(window.crimeJSON, window.arrestJSON);
         });
 
     });
