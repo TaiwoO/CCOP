@@ -60,7 +60,7 @@
     transition: 0.5s;/* 0.5 second transition effect to slide in the sidenav */
     width: 0px;/* 0 width - change this with JavaScript */
     right: 0; /* nav bar on right */
-    z-index: 1; /* Stay on the top layer */
+    z-index: 10; /* Stay on the top layer */
 }
 
 #nav-side-menu .brand {
@@ -205,8 +205,3 @@
 
 
 /*=========TABLE===============*/
-.tablerow {
-    width: 99%;
-    align: center;
-    margin: auto;
-}

@@ -24,7 +24,8 @@ function initTables(){
 	"scrollY": 100,
 	"scrollCollapse": true,
 	"processing": true,
-	"autoWidth": true,
+	"autoWidth": false,
+	"scrollX": true,
 	"columns": [
 	    { "title": "Offense", "data" : "description" },
 	    { "title": "Dispatch Time", "data" : "dispatch" },
@@ -41,7 +42,8 @@ function initTables(){
 	"scrollY": 100,
 	"scrollCollapse": true,
 	"processing": true,
-	"autoWidth": true,
+	"autoWidth": false,
+	"scrollX": true,
 	"columns": [
 	    { "title": "Time", "data" : "date" },
 	    { "title": "Address", "data" : "street" },

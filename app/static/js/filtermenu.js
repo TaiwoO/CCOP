@@ -74,16 +74,17 @@ function initTimeline(){
 		step: 1,
 		values: [ minDateVal, maxDateVal ],
 		slide: function( event, ui){
-            minDateString = formatDT(new Date(ui.values[0] * 1000));
+		    minDateString = formatDT(new Date(ui.values[0] * 1000));
 		    maxDateString = formatDT(new Date(ui.values[1] * 1000));
 		    $('.slider-time1').html(minDateString);
 		    $('.slider-time2').html(maxDateString);
 		},
 		change: function( event, ui ){
 		    window.minDate = new Date(ui.values[0] * 1000);
-            window.maxDate = new Date(ui.values[1] * 1000);
-            //console.log(window.minDate);
-            //console.log(window.maxDate);
+		    window.maxDate = new Date(ui.values[1] * 1000);
+		    //console.log(window.minDate);
+		    //console.log(window.maxDate);
+		    updateModules();
 		}
 	    });
 	} );
