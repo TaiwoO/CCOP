@@ -1,4 +1,10 @@
 /*an unnecessary comment*/
+
+/*======================Main==============================*/
+
+#main {
+    margin-top: 55px;
+}
 /*======================TITLE BAR==============================*/
 
 .navbar {
@@ -42,6 +48,7 @@
 /*======================SIDE NAVIGATION BAR====================*/
 
 #nav-side-menu {
+    margin-top:55px;
     overflow: auto;
     font-family: verdana;
     font-size: 12px;
