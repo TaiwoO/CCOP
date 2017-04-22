@@ -17,7 +17,7 @@ function initTables(){
     crimeTable = $("#crimetable").DataTable({
 	"deferRender": true,
 	"searching": false,
-	"paging": false,
+	"paging": true,
 	"lengthChange": false,
 	"info": false,
 	"scroller": true,
@@ -34,7 +34,7 @@ function initTables(){
     arrestTable = $("#arresttable").DataTable({
 	"deferRender": true,
 	"searching": false,
-	"paging": false,
+	"paging": true,
 	"lengthChange": false,
 	"info": false,
 	"scroller": true,
@@ -61,6 +61,8 @@ function updateTables(crimes, arrests){
     //arrestTable.ajax.url(arrests).load();
     crimeTable.draw();
     arrestTable.draw();
+    //console.log(crimeTable.data().count());
+    //console.log(arrestTable.data().count());
 }
 
 //function for highlighting selected marker row in table
