@@ -2,6 +2,7 @@
 # the main config file contains API keys
 # and should stay off github
 config.py
+config.py~
 
 # old config file
 # config.ini
