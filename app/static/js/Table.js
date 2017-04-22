@@ -16,11 +16,15 @@ var arrestTable;
 function initTables(){
     crimeTable = $("#crimetable").DataTable({
 	"deferRender": true,
-	"bFilter": false,
-	"bPaginate": false,
-	"bLengthChange": false,
-	"bInfo": false,
+	"searching": false,
+	"paging": false,
+	"lengthChange": false,
+	"info": false,
 	"scroller": true,
+	"scrollY": 100,
+	"scrollCollapse": true,
+	"processing": true,
+	"autoWidth": true,
 	"columns": [
 	    { "title": "Offense", "data" : "description" },
 	    { "title": "Dispatch Time", "data" : "dispatch" },
@@ -29,14 +33,19 @@ function initTables(){
     });
     arrestTable = $("#arresttable").DataTable({
 	"deferRender": true,
-	"bFilter": false,
-	"bPaginate": false,
-	"bLengthChange": false,
-	"bInfo": false,
+	"searching": false,
+	"paging": false,
+	"lengthChange": false,
+	"info": false,
 	"scroller": true,
+	"scrollY": 100,
+	"scrollCollapse": true,
+	"processing": true,
+	"autoWidth": true,
 	"columns": [
 	    { "title": "Time", "data" : "date" },
 	    { "title": "Address", "data" : "street" },
+	    { "title": "Offense", "data" : "offense" }
 	]
     });
 };
@@ -48,6 +57,10 @@ function updateTables(crimes, arrests){
     arrestTable.clear();
     crimeTable.rows.add(crimes);
     arrestTable.rows.add(arrests);
+    //crimeTable.ajax.url(crimes).load();
+    //arrestTable.ajax.url(arrests).load();
     crimeTable.draw();
     arrestTable.draw();
 }
+
+//function for highlighting selected marker row in table
