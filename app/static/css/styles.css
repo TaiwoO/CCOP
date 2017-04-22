@@ -1,10 +1,18 @@
 /*an unnecessary comment*/
+
+/*======================Main==============================*/
+
+#main {
+    margin-top: 55px;
+}
 /*======================TITLE BAR==============================*/
 
 .navbar {
     margin: 0px;
 }
-
+#side-nav-btn {
+    height: 50px;
+}
 
 /*======================MAP VIEW===============================*/
 
@@ -40,6 +48,7 @@
 /*======================SIDE NAVIGATION BAR====================*/
 
 #nav-side-menu {
+    margin-top:55px;
     overflow: auto;
     font-family: verdana;
     font-size: 12px;
