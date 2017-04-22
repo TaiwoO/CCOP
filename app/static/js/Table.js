@@ -10,6 +10,8 @@ var arrestTable;
   more info about options at:
   http://legacy.datatables.net/usage/features
   https://datatables.net/reference/option/
+
+  columns parameter specifies column headers, data specifies its key within whatever data array you pass into updateTables
 */
 function initTables(){
     crimeTable = $("#crimetable").DataTable({
@@ -18,7 +20,12 @@ function initTables(){
 	"bPaginate": false,
 	"bLengthChange": false,
 	"bInfo": false,
-	"scroller": true
+	"scroller": true,
+	"columns": [
+	    { "title": "Offense", "data" : "description" },
+	    { "title": "Dispatch Time", "data" : "dispatch" },
+	    { "title": "Address", "data" : "street" }
+	]
     });
     arrestTable = $("#arresttable").DataTable({
 	"deferRender": true,
@@ -26,16 +33,21 @@ function initTables(){
 	"bPaginate": false,
 	"bLengthChange": false,
 	"bInfo": false,
-	"scroller": true
+	"scroller": true,
+	"columns": [
+	    { "title": "Time", "data" : "date" },
+	    { "title": "Address", "data" : "street" },
+	]
     });
-    
 };
 
 //clear old rows and add new ones based on crime/arrest data passed in
+//this function ASSUMES (probably bad) that the tables exist when called
 function updateTables(crimes, arrests){
-    var crimeRow;
-    var arrestRow;
-
-    
-
+    crimeTable.clear();
+    arrestTable.clear();
+    crimeTable.rows.add(crimes);
+    arrestTable.rows.add(arrests);
+    crimeTable.draw();
+    arrestTable.draw();
 }
