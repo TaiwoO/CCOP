@@ -29,7 +29,8 @@ $(document).ready(function () {
         updateModules();
     });
     
-    
+    // dragable div sizes
+    $(".dragChild").resizable({handles: "n"});
 });
 
 
