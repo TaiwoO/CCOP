@@ -66,7 +66,7 @@ function updateMarkers()
 		title: "Crime\n"+crime.description+"\n"+crime.dispatch+"\n"+crime.street,
 		label: "C"
 	    });
-        window.mapMarkers.push(marker);
+            window.mapMarkers.push(marker);
         
 	}
    
@@ -81,7 +81,8 @@ function updateMarkers()
 		title: "Arrest\n"+arrest.offense+"\n"+arrest.date+"\n"+arrest.street,
 		label: "A"
 	    });
-        //marker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png');
+            //marker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png');
+	    window.mapMarkers.push(marker);
 	}
 
 
