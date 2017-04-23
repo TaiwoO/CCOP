@@ -1,15 +1,24 @@
-/*an unnecessary comment*/
-
 /*======================Main==============================*/
+
+html {
+    height: 100%;
+}
+
+body {
+    min-height: 100%;
+}
 
 #main {
     margin-top: 55px;
+    width: 100%;
 }
+
 /*======================TITLE BAR==============================*/
 
 .navbar {
     margin: 0px;
 }
+
 #side-nav-btn {
     height: 50px;
 }
@@ -17,7 +26,7 @@
 /*======================MAP VIEW===============================*/
 
 .map-wrapper {
-    height: 600px;
+    height: 500px;
     border: 2px solid;
 }
 
@@ -30,7 +39,7 @@
 /*======================CHART VIEW=============================*/
 
 .chart-wrapper {
-    height: 600px;
+    height: 500px;
     border: 2px solid;
     padding: 20px;
 }
