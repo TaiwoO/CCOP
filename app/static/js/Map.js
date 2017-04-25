@@ -7,7 +7,7 @@ function initMap()
 {
     //console.log("initMap called");
 
-    var minZoomLevel = 10;
+    var minZoomLevel = 12;
     var latLng = { lat: 39.154743, lng: -77.240515 };
     window.map = new google.maps.Map(document.getElementById('map'),{
         zoom: minZoomLevel,
@@ -53,13 +53,29 @@ function updateMarkers()
     //console.log("updateMarkers called");
     // clear out the old markers
     clearMarkers();
+    var crime, latLng, arrest,length,crimeLength,arrestLength;
+    
+    crimeLength = window.crimeJSON.length;
+    arrestLength = window.arrestJSON.length;
+    
+    if(arrestLength > crimeLength)
+    {
+	length = arrestLength;
+    }
+    else
+    {
+	length = crimeLength;
+    }
 
-	var crime, latLng;
-	for(i in window.crimeJSON){
-	    //console.log(i);
+    //loop over the length of the larger dataset
+    for(i = 0; i < length; i++)
+    {
+	//console.log(i);
+	if(i < crimeLength)
+	{
 	    crime = window.crimeJSON[i];
 	    latLng = new google.maps.LatLng(crime.latitude, crime.longitude);
-
+	    
 	    var marker = new google.maps.Marker({
 		position:latLng,
 		map: map,
@@ -67,12 +83,10 @@ function updateMarkers()
 		label: "C"
 	    });
             window.mapMarkers.push(marker);
-        
 	}
-   
-	var arrest;
-	for(i in window.arrestJSON){
-	    arrest = window.arrestJSON[i];
+	if(i < arrestLength)
+	{
+            arrest = window.arrestJSON[i];
 	    latLng = new google.maps.LatLng(arrest.latitude, arrest.longitude);
 	    
 	    var marker = new google.maps.Marker({
@@ -84,17 +98,5 @@ function updateMarkers()
             //marker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png');
 	    window.mapMarkers.push(marker);
 	}
-
-
-    
+    }
 }
-
-//limits the map
-function limitMap(map, minZoomLevel)
-{
-    var opt = { minZoom: minZoomLevel};
-    map.setOptions(opt);
-    map.fitBounds();
-}
-//Filter markers
-//get data from selected marker
