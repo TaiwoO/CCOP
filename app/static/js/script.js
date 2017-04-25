@@ -1,3 +1,6 @@
+//ties together all of the other javascript files
+
+
 // Return raw JSON from endpoint
 function getJson(endpoint) {
     $.getJSON($SCRIPT_ROOT + endpoint,{}, function (data) {
