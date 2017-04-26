@@ -15,7 +15,7 @@ $(document).ready(function () {
     setupSidebarAnimation();
 
     // setup chart view
-    initCharts();
+    //initCharts();
 
     // setup table view
     initTables();
@@ -74,7 +74,7 @@ function updateModules(){
             }
 
             // update the charts
-            drawPieChart(query);
+            updatePieChart(query);
 
 	    updateTables(window.crimeJSON, window.arrestJSON);
         });
