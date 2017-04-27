@@ -31,6 +31,36 @@ function initMap()
     // track when the user is dragging
     google.maps.event.addListener(map, 'dragstart', function(){window.isDragging = true;});
     google.maps.event.addListener(map, 'dragend', function(){window.isDragging = false;});
+
+
+    var legend = window.legend;
+    var div = document.createElement('div');
+    div.innerHTML = "<h3>Legend</h3>";
+    legend.appendChild(div);
+    var icons =
+	{
+            crime: {
+		name: 'Crime',
+		icon: "/static/images/blue_MarkerC.png"
+            },
+            arrest: {
+		name: 'Arres',
+		icon:  "/static/images/red_MarkerA.png"
+            }
+	};
+    
+    //add a key to the side
+    
+        for (var key in icons) {
+          var type = icons[key];
+          var name = type.name;
+          var icon = type.icon;
+          div = document.createElement('div');
+          div.innerHTML = '<br><img src= "' + icon + '"> ' + name;
+          legend.appendChild(div);
+        }
+
+        map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
         
 }
 
@@ -54,7 +84,8 @@ function updateMarkers()
     // clear out the old markers
     clearMarkers();
     var crime, latLng, arrest,length,crimeLength,arrestLength;
-    
+    var crimeIcon = "/static/images/blue_MarkerC.png";
+    var arrestIcon = "/static/images/red_MarkerA.png";
     crimeLength = window.crimeJSON.length;
     arrestLength = window.arrestJSON.length;
     
@@ -80,7 +111,7 @@ function updateMarkers()
 		position:latLng,
 		map: map,
 		title: "Crime\n"+crime.description+"\n"+crime.dispatch+"\n"+crime.street,
-		label: "C"
+		icon: crimeIcon
 	    });
             window.mapMarkers.push(marker);
 	}
@@ -93,9 +124,8 @@ function updateMarkers()
 		position:latLng,
 		map: map,
 		title: "Arrest\n"+arrest.offense+"\n"+arrest.date+"\n"+arrest.street,
-		label: "A"
+		icon:arrestIcon
 	    });
-            //marker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png');
 	    window.mapMarkers.push(marker);
 	}
     }
