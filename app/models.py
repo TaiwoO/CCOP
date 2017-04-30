@@ -31,6 +31,7 @@ class Crime (db.Model):
     @property
     def serialize(self):
         return{
+            'id': self.id,
             'dispatch': self.dispatch,
             'start': self.start,
             'street': self.street,
@@ -69,6 +70,7 @@ class Arrest(db.Model):
     @property
     def serialize(self):
         return{
+            'id': self.id,
             'first': self.first,
             'last': self.last,
             'middle': self.middle,
