@@ -113,6 +113,11 @@ function updateMarkers()
 		title: "Crime\n"+crime.description+"\n"+crime.dispatch+"\n"+crime.street,
 		icon: crimeIcon
 	    });
+	    //clicking the marker will call the highlight row function from Table.js
+	    marker.addListener('click', function() {
+		highlightRow(crime.id);
+            });
+	    
             window.mapMarkers.push(marker);
 	}
 	if(i < arrestLength)
@@ -126,6 +131,10 @@ function updateMarkers()
 		title: "Arrest\n"+arrest.offense+"\n"+arrest.date+"\n"+arrest.street,
 		icon:arrestIcon
 	    });
+	    //clicking the marker will call the highlight row function from Table.js
+	    marker.addListener('click', function() {
+		highlightRow(arrest.id);
+            });
 	    window.mapMarkers.push(marker);
 	}
     }
