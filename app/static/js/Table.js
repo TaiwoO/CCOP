@@ -68,3 +68,6 @@ function updateTables(crimes, arrests){
 }
 
 //function for highlighting selected marker row in table
+function highlightRow(id){
+    //should find the row given the id and highlight it
+}
