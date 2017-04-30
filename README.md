@@ -1,9 +1,9 @@
-# UMBC_Spr17_TeamPlusPlus
+# Team++ Criminal Common Operating Picture
 
 ## Getting started
 
 1. Begin with a fresh install of a debian-based linux distribution (Mint/Ubuntu/Kali)
-2. Run setup.sh to install necessary dependencies and create virtual python environment
-3. Run "source ccop_dev/bin/activate" to activate the virtual python environment
-4. Run db_create.py to create the database and set up the tables
-5. Run api_interface.py to pull data from the endpoints into the database
+2. Run setup.sh  This installs dependencies in a Python virtual environment and builds an empty database
+3. Run scrapedata.sh to pull data from the endpoints into the database
+4. Run scheduler.sh to schedule a cron job that scrapes new data daily at midnight
+5. Run init_host.sh to start the local server on port 5000
