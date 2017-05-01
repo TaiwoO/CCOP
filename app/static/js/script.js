@@ -75,7 +75,7 @@ function updateModules(){
             // update the charts
             updatePieChart(query);
             // updateHistogram(window.minDate,window.maxDate,window.arrestJSON);
-            updateLineChart(window.arrestJSON);
+            updateLineChart( window.crimeJSON, window.arrestJSON);
 
 	    updateTables(window.crimeJSON, window.arrestJSON);
         });
