@@ -44,7 +44,7 @@ function initMap()
 		icon: "/static/images/blue_MarkerC.png"
             },
             arrest: {
-		name: 'Arres',
+		name: 'Arrest',
 		icon:  "/static/images/red_MarkerA.png"
             }
 	};

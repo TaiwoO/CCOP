@@ -57,7 +57,6 @@ function updateModules(){
 
     var query = "?" + minTime + maxTime + bounds;
 
-    //console.log(query);
 
     // then, make requests to the endpoints to get the new data
 
@@ -75,6 +74,8 @@ function updateModules(){
 
             // update the charts
             updatePieChart(query);
+            // updateHistogram(window.minDate,window.maxDate,window.arrestJSON);
+            updateLineChart( window.crimeJSON, window.arrestJSON);
 
 	    updateTables(window.crimeJSON, window.arrestJSON);
         });
