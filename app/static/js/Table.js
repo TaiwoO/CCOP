@@ -68,6 +68,14 @@ function updateTables(crimes, arrests){
 }
 
 //function for highlighting selected marker row in table
-function highlightRow(id){
-    //should find the row given the id and highlight it
+//params: table name, row id
+//table name: use "crime" or "arrest"
+//id should be proportionate to indices in whatever data arrays were used. [0 - CRIME/ARREST_MAX)
+function highlightRow(name, id){
+    //console.log("marker clicked. " + name + " " + id);
+    if(name == "crime"){
+	crimeTable.row(id).scrollTo(false);
+    }else if(name == "arrest"){
+	arrestTable.row(id).scrollTo(false);
+    }
 }
