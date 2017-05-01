@@ -4,7 +4,7 @@
 from datetime import datetime
 
 from flask import render_template, jsonify, request
-from sqlalchemy import func
+from sqlalchemy import func, desc
 
 from app import app, db
 from app.models import Crime, Arrest
@@ -80,7 +80,7 @@ def arrests():
     bounds = [float(i) for i in request.args.get('bounds').split(',')]
 
     # query the db
-    arrests = Arrest.query.filter(Arrest.date >= min_time) \
+    arrests = Arrest.query.order_by(Arrest.date).filter(Arrest.date >= min_time) \
                         .filter(Arrest.date <= max_time) \
                         .filter(Arrest.latitude > bounds[0]) \
                         .filter(Arrest.latitude < bounds[2]) \
