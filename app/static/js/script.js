@@ -14,9 +14,12 @@ $(document).ready(function () {
     // enable the menu animations
     setupSidebarAnimation();
 
+    // setup filter menu cities/crime_type checkboxes
+    initDropdownMenus();
+    
     // setup chart view
     //initCharts();
-
+    
     // setup table view
     initTables();
 

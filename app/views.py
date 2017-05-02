@@ -157,3 +157,35 @@ def crime_type():
     crime_types['Other'] = not_categorized
 
     return jsonify(crime_types = crime_types)
+
+#endpoint for getting distinct cities and offense types
+@app.route('/types', methods=['GET'])
+def unique_types():
+    cities = set()
+    crime_types = set()
+
+    #query db for unique city names and join with original set
+    query = db.session.query(Crime.city.distinct().label("city"))
+    citynames = [row.city for row in query.all()]
+    cities |= set(citynames)
+
+    query = db.session.query(Arrest.city.distinct().label("city"))
+    citynames = [row.city for row in query.all()]
+    cities |= set(citynames)
+    
+    #print(cities)
+    #print("len of cities", len(cities))
+
+    #query db for unique offense names and join with original set
+    query = db.session.query(Crime.description.distinct().label("description"))
+    types = [row.description for row in query.all()]
+    crime_types |= set(types)
+
+    query = db.session.query(Arrest.offense.distinct().label("offense"))
+    types = [row.offense for row in query.all()]
+    crime_types |= set(types)
+
+    #print(crime_types)
+    #print("len of crimes list", len(crime_types))
+        
+    return jsonify(cities = list(cities), crime_types = list(crime_types))
