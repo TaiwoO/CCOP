@@ -90,3 +90,45 @@ function initTimeline(){
 	} );
     });
 }
+
+//create checkboxes and labels for Crime/City filter dropdown menus
+function initDropdownMenus(){
+    $.getJSON($SCRIPT_ROOT + "/types", function(data){
+	cities = data["cities"];
+	crime_types = data["crime_types"];
+	
+	//add city checkboxes
+	for(i = 0; i < cities.length; i++){
+	    var newCheckbox = document.createElement("input");
+	    newCheckbox.type = "checkbox";
+	    newCheckbox.value = cities[i];
+	    newCheckbox.checked = "checked";
+	    $(".cityList").append("&nbsp; ", newCheckbox, " ", cities[i], "</br>");
+	}
+
+	//add crime type checkboxes
+	for(i = 0; i < 300; i++){
+	    var newCheckbox = document.createElement("input");
+	    newCheckbox.type = "checkbox";
+	    newCheckbox.value = crime_types[i];
+	    newCheckbox.checked = "checked";
+	    $(".crimeList").append("&nbsp; ", newCheckbox, " ", crime_types[i], "</br>");
+	}
+
+	initCheckboxDetection();
+    });   
+}
+
+//initialize checkbox change detection and return city/crimes
+//should be called after checkboxes are made
+//TODO: separate detection of city/crime checkbox change events
+function initCheckboxDetection(){
+    $("input[type=checkbox]").change(function(){
+	//console.log("working");
+	cityVals = [];
+	crimeVals = [];
+	$("input[type=checkbox]:checked").each(function() {
+	    //console.log($(this).val());
+	});
+    });
+}

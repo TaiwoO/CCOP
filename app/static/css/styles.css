@@ -221,6 +221,12 @@ body {
     }
 }
 
+.crimeList, .cityList{
+    width: auto;
+    height: 200px;
+    overflow-y: scroll;
+}
+
 /*=========TIME SLIDER STUFF==========*/
 .ui-slider-horizontal {
     margin: auto;
