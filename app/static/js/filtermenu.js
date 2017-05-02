@@ -107,7 +107,7 @@ function initDropdownMenus(){
 	}
 
 	//add crime type checkboxes
-	for(i = 0; i < 300; i++){
+	for(i = 0; i < crime_types.length; i++){
 	    var newCheckbox = document.createElement("input");
 	    newCheckbox.type = "checkbox";
 	    newCheckbox.value = crime_types[i];
