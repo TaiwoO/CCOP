@@ -41,7 +41,7 @@ function initPieChart() {
             pieHole: 0.4,
             width: 600,
             height: 600,
-                enableInteractivity: false
+            enableInteractivity: false
         };
         // Instantiate and draw our chart, passing in some options.
         piechart = new google.visualization.PieChart(document.getElementById('piechart'));
@@ -58,6 +58,24 @@ function updatePieChart(query) {
     $.getJSON($SCRIPT_ROOT + "/crime/type" + query, {}, function (result) {
 
         var crimeTypes = result.crime_types;
+        
+        // Check if empty
+        var empty = true;
+        for (var key in crimeTypes) {
+            if (crimeTypes[key] > 0) {
+                empty = false;
+            }
+        }
+
+        if (empty) {
+            $("#piechart").hide();
+            $("#no-data-piechart").show();
+            return;
+        } 
+        else {
+            $("#piechart").show();
+            $("#no-data-piechart").hide();
+        }
 
         // Chart must exisit before it is updated
         if (piechart) {
@@ -117,6 +135,14 @@ function updateLineChart(crimes, arrests) {
     var dateofCrime = {};
     var dateOfArrest = {};
     var totalArrests = arrests.length;
+    var totalCrimes = crimes.length;
+
+    if (totalArrests == 0 || totalCrimes == 0) {
+        $(function () {
+            $("#histogram").text("NO DATA");
+        })
+        return;
+    }
 
     // Get the frequency of arrests for each distinct date. 
     for (let i in arrests) {
@@ -145,10 +171,6 @@ function updateLineChart(crimes, arrests) {
             }
         }
     }
-    
-    // console.log(dateofCrime)
-
-
 
     // Line chart must exist before updating 
     if (linechart) {
@@ -161,6 +183,8 @@ function updateLineChart(crimes, arrests) {
         // Add updated data
         for (let date in dateOfArrest) {
             linechartData.addRow([new Date(date), dateOfArrest[date]])
+            // linechartData.addRow([date, dateOfArrest[date]])
+
         }
 
         var options = {
@@ -170,7 +194,7 @@ function updateLineChart(crimes, arrests) {
             vAxis: {
                 title: 'Frequency'
             },
-            legend: {position: 'left'},
+            legend: { position: 'left' },
             title: 'Arrest Freqency by Date',
             width: 600,
             height: 400
