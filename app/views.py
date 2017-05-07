@@ -154,7 +154,7 @@ def crime_type():
                 total_matches = Crime.query.filter(Crime.description.like("%"+prefix+"%")).count()
             crime_types[crime_type] += total_matches
             not_categorized -= total_matches
-    crime_types['Other'] = not_categorized
+    # crime_types['Other'] = not_categorized
 
     return jsonify(crime_types = crime_types)
 

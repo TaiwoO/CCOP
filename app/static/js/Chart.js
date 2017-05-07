@@ -58,8 +58,8 @@ function updatePieChart(query) {
     $.getJSON($SCRIPT_ROOT + "/crime/type" + query, {}, function (result) {
 
         var crimeTypes = result.crime_types;
-        
-        // Check if empty
+
+        //Check if empty
         var empty = true;
         for (var key in crimeTypes) {
             if (crimeTypes[key] > 0) {
@@ -67,15 +67,15 @@ function updatePieChart(query) {
             }
         }
 
-        if (empty) {
-            $("#piechart").hide();
-            $("#no-data-piechart").show();
-            return;
-        } 
-        else {
-            $("#piechart").show();
-            $("#no-data-piechart").hide();
-        }
+        // if (empty) {
+        //     $("#piechart").hide();
+        //     $("#no-data-piechart").show();
+        //     return;
+        // } 
+        // else {
+        //     $("#piechart").show();
+        //     $("#no-data-piechart").hide();
+        // }
 
         // Chart must exisit before it is updated
         if (piechart) {
@@ -90,8 +90,11 @@ function updatePieChart(query) {
                 piechartData.addRow([type, crimeTypes[type]]);
             }
 
+            var title = "Crime Types"
+            if (empty)
+                title = "No Crime Data to Display"
             var options = {
-                title: 'Crime types',
+                title: title,
                 pieHole: 0.4,
                 width: 600,
                 height: 500,
@@ -126,6 +129,8 @@ function initLineChart() {
 
     linechart = new google.visualization.LineChart(document.getElementById('histogram'));
 
+    // linechart = new google.visualization.Histogram(document.getElementById('histogram'));
+
     if (window.arrestJSON && window.crimeJSON)
         updateLineChart(window.crimeJSON, window.arrestJSON)
 
@@ -137,12 +142,12 @@ function updateLineChart(crimes, arrests) {
     var totalArrests = arrests.length;
     var totalCrimes = crimes.length;
 
-    if (totalArrests == 0 || totalCrimes == 0) {
-        $(function () {
-            $("#histogram").text("NO DATA");
-        })
-        return;
-    }
+    // if (totalArrests == 0 || totalCrimes == 0) {
+    //     $(function () {
+    //         $("#histogram").text("NO DATA");
+    //     })
+    //     return;
+    // }
 
     // Get the frequency of arrests for each distinct date. 
     for (let i in arrests) {
