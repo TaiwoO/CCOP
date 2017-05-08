@@ -101,6 +101,7 @@ function initDropdownMenus(){
 	for(i = 0; i < cities.length; i++){
 	    var newCheckbox = document.createElement("input");
 	    newCheckbox.type = "checkbox";
+	    newCheckbox.name = "city";
 	    newCheckbox.value = cities[i];
 	    newCheckbox.checked = "checked";
 	    $(".cityList").append("&nbsp; ", newCheckbox, " ", cities[i], "</br>");
@@ -110,6 +111,7 @@ function initDropdownMenus(){
 	for(i = 0; i < crime_types.length; i++){
 	    var newCheckbox = document.createElement("input");
 	    newCheckbox.type = "checkbox";
+	    newCheckbox.name = "crime";
 	    newCheckbox.value = crime_types[i];
 	    newCheckbox.checked = "checked";
 	    $(".crimeList").append("&nbsp; ", newCheckbox, " ", crime_types[i], "</br>");
@@ -118,11 +120,16 @@ function initDropdownMenus(){
 	//hardcoded "other" option for now
 	var newCheckbox = document.createElement("input");
 	newCheckbox.type = "checkbox";
+	newCheckbox.name = "crime";
 	newCheckbox.value = "OTHER";
 	newCheckbox.checked = "checked";
 	$(".crimeList").append("&nbsp; ", newCheckbox, " ", "OTHER", "</br>");
 	
 	initCheckboxDetection();
+	updateOptionQueries();
+	
+	//console.log(window.selectedCities);
+	//console.log(window.selectedCrimes);
     });   
 }
 
@@ -132,10 +139,25 @@ function initDropdownMenus(){
 function initCheckboxDetection(){
     $("input[type=checkbox]").change(function(){
 	//console.log("working");
-	cityVals = [];
-	crimeVals = [];
-	$("input[type=checkbox]:checked").each(function() {
-	    //console.log($(this).val());
-	});
+	updateOptionQueries();
+	updateModules();
     });
+}
+
+function updateOptionQueries(){
+    cityVals = "";	
+    crimeVals = "";
+    $("input[type=checkbox]:checked").each(function() {
+	//console.log(this.name, " ", this.value);
+	//create city/crime query strings that are comma delimited
+	if(this.name == "city"){
+	    cityVals += this.value + ",";
+	}else if(this.name == "crime"){
+	    crimeVals += this.value + ",";
+	    }
+    });
+    window.selectedCities = cityVals.slice(0, -1);
+    window.selectedCrimes = crimeVals.slice(0, -1);
+    //console.log(window.selectedCities);
+    //console.log(window.selectedCrimes);
 }

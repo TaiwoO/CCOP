@@ -27,9 +27,9 @@ function initTables(){
 	"autoWidth": false,
 	"scrollX": true,
 	"columns": [
-	    { "title": "Offense", "data" : "description" },
-	    { "title": "Dispatch Time", "data" : "dispatch" },
-	    { "title": "Address", "data" : "street" }
+	    { "title": "Time", "data" : "dispatch" },
+	    { "title": "City", "data" : "city" },
+	    { "title": "Offense", "data" : "description" }
 	]
     });
     arrestTable = $("#arresttable").DataTable({
@@ -46,7 +46,7 @@ function initTables(){
 	"scrollX": true,
 	"columns": [
 	    { "title": "Time", "data" : "date" },
-	    { "title": "Address", "data" : "street" },
+	    { "title": "City", "data" : "city" },
 	    { "title": "Offense", "data" : "offense" }
 	]
     });
