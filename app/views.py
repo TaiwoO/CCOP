@@ -42,9 +42,12 @@ def crimes():
     min_time = datetime.strptime(request.args.get('min_time'),JS_DATETIME_PARSE_STRING)
     max_time = datetime.strptime(request.args.get('max_time'),JS_DATETIME_PARSE_STRING)
 
+    city_names = request.args.get('cities').split(',')
+    crime_names = request.args.get('crimes').split(',')
+    
     # parse map boundary values
     bounds = [float(i) for i in request.args.get('bounds').split(',')]
-
+    
     # query the db
     crimes = Crime.query.filter(Crime.start >= min_time) \
                         .filter(Crime.start <= max_time) \
@@ -52,6 +55,7 @@ def crimes():
                         .filter(Crime.latitude < bounds[2]) \
                         .filter(Crime.longitude > bounds[1]) \
                         .filter(Crime.longitude < bounds[3]) \
+                        .filter(Crime.city.in_(city_names)) \
                         .limit(MAX_CRIMES).all()
     return jsonify(crimes=[i.serialize for i in crimes])
 
@@ -76,6 +80,9 @@ def arrests():
     min_time = datetime.strptime(request.args.get('min_time'),JS_DATETIME_PARSE_STRING)
     max_time = datetime.strptime(request.args.get('max_time'),JS_DATETIME_PARSE_STRING)
 
+    city_names = request.args.get('cities').split(',')
+    crime_names = request.args.get('crimes').split(',')
+    
     # parse map boundary values
     bounds = [float(i) for i in request.args.get('bounds').split(',')]
 
@@ -86,6 +93,7 @@ def arrests():
                         .filter(Arrest.latitude < bounds[2]) \
                         .filter(Arrest.longitude > bounds[1]) \
                         .filter(Arrest.longitude < bounds[3]) \
+                        .filter(Arrest.city.in_(city_names)) \
                         .limit(MAX_ARRESTS).all()
     return jsonify(arrests=[i.serialize for i in arrests])
 
@@ -193,4 +201,4 @@ def unique_types():
     #print(crime_types)
     #print("len of crimes list", len(crime_types))
         
-    return jsonify(cities = list(cities), crime_types = list(CRIME_TYPES.keys()))
+    return jsonify(cities = sorted(list(cities)), crime_types = list(CRIME_TYPES.keys()))

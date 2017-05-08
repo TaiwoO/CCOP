@@ -58,7 +58,10 @@ function updateModules(){
         var bounds = "&bounds=" + mapLoaded.toUrlValue();
     }
 
-    var query = "?" + minTime + maxTime + bounds;
+    var cities = "&cities=" + window.selectedCities;
+    var crimes = "&crimes=" + window.selectedCrimes;
+    
+    var query = "?" + minTime + maxTime + bounds + cities + crimes;
 
 
     // then, make requests to the endpoints to get the new data
