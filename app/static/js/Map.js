@@ -16,16 +16,19 @@ function initMap()
         streetViewControl: false
     });
 
+    /*
     google.maps.event.addListenerOnce(map, 'bounds_changed', function() {
         // runs once the map loads
         updateMarkers();
+    });
+    */
 
-        google.maps.event.addListener(map, 'bounds_changed', function() {
-            // don't constantly update while user drags the map
-            if(!window.isDragging){
-                updateModules();
-            }
-        });
+    //idle event triggered after drag end and zoom in/out end
+    google.maps.event.addListener(map, 'idle', function() {
+        // don't constantly update while user drags the map
+        if(!window.isDragging){
+            updateModules();
+        }
     });
 
     // track when the user is dragging
