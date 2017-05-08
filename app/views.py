@@ -177,6 +177,7 @@ def unique_types():
     #print("len of cities", len(cities))
 
     #query db for unique offense names and join with original set
+    ''' #old query
     query = db.session.query(Crime.description.distinct().label("description"))
     types = [row.description for row in query.all()]
     crime_types |= set(types)
@@ -184,8 +185,12 @@ def unique_types():
     query = db.session.query(Arrest.offense.distinct().label("offense"))
     types = [row.offense for row in query.all()]
     crime_types |= set(types)
+    '''
 
+    #use offense names provided in config
+    
+    
     #print(crime_types)
     #print("len of crimes list", len(crime_types))
         
-    return jsonify(cities = list(cities), crime_types = list(crime_types))
+    return jsonify(cities = list(cities), crime_types = list(CRIME_TYPES.keys()))

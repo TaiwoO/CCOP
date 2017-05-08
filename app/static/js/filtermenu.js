@@ -115,6 +115,13 @@ function initDropdownMenus(){
 	    $(".crimeList").append("&nbsp; ", newCheckbox, " ", crime_types[i], "</br>");
 	}
 
+	//hardcoded "other" option for now
+	var newCheckbox = document.createElement("input");
+	newCheckbox.type = "checkbox";
+	newCheckbox.value = "OTHER";
+	newCheckbox.checked = "checked";
+	$(".crimeList").append("&nbsp; ", newCheckbox, " ", "OTHER", "</br>");
+	
 	initCheckboxDetection();
     });   
 }

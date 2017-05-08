@@ -71,9 +71,10 @@ function updateModules(){
             window.arrestJSON = arrestData.arrests;
 	    
             // reload the markers if the map has already been loaded
-            if(mapLoaded !== undefined){
+	    //commenting out this if statement seems to fix loading issues
+	    //if(mapLoaded !== undefined){
                 updateMarkers();
-            }
+            //}
 
             // update the charts
             updatePieChart(query);
