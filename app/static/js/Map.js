@@ -59,6 +59,7 @@ function initMap()
           var name = type.name;
           var icon = type.icon;
           div = document.createElement('div');
+          div.className += "legendItem";
           div.innerHTML = '<br><img src= "' + icon + '"> ' + name;
           legend.appendChild(div);
         }
