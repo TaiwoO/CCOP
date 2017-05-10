@@ -1,4 +1,5 @@
 /*
+  author: John Shueh
   File containing implementation of tabular view using DataTables
 */
 
