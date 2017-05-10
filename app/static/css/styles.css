@@ -242,6 +242,7 @@ body {
     width: auto;
     height: 200px;
     overflow-y: scroll;
+    background-color: #4f5459;
 }
 
 /*=========TIME SLIDER STUFF==========*/
