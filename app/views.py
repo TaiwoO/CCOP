@@ -4,7 +4,7 @@
 from datetime import datetime
 
 from flask import render_template, jsonify, request
-from sqlalchemy import func, desc
+from sqlalchemy import func, desc, or_
 
 from app import app, db
 from app.models import Crime, Arrest
@@ -24,7 +24,7 @@ def index():
 # crime endpoint
 '''
 sample url:
-http://localhost:5000/crime?min_time=2017-04-01T15:47:13.657Z&max_time=2017-04-19T15:47:13.657Z&bounds=38.955865,-77.232668,39.1646,-77.055342
+http://localhost:5000/crime?min_time=2017-04-01T15:47:13.657Z&max_time=2017-04-19T15:47:13.657Z&bounds=38.955865,-77.232668,39.1646,-77.055342&cities=...&crimes=...
 
 url query args:
 datetimes are the javascript Date.toJSON() format
@@ -35,6 +35,9 @@ lat/long query args:
 uses google.maps.Map.getBounds().toUrlValue() format,
 that is: lat_lo,lng_lo,lat_hi,lng_hi
 bounds=38.955865,-77.232668,39.1646,-77.055342
+
+cities: a comma delimited string of cities that should be filtered for
+crime: a comma delimited string of crime types that refers to the pre-defined dictionary of crimes in config.py
 '''
 @app.route('/crime', methods=['GET'])
 def crimes():
@@ -42,12 +45,16 @@ def crimes():
     min_time = datetime.strptime(request.args.get('min_time'),JS_DATETIME_PARSE_STRING)
     max_time = datetime.strptime(request.args.get('max_time'),JS_DATETIME_PARSE_STRING)
 
+    #parse city/crime names
     city_names = request.args.get('cities').split(',')
     crime_names = request.args.get('crimes').split(',')
+    if("" in crime_names):
+        #in case of no crime checkboxes checked
+        crime_names.remove('')
     
     # parse map boundary values
     bounds = [float(i) for i in request.args.get('bounds').split(',')]
-    
+
     # query the db
     crimes = Crime.query.filter(Crime.start >= min_time) \
                         .filter(Crime.start <= max_time) \
@@ -55,8 +62,29 @@ def crimes():
                         .filter(Crime.latitude < bounds[2]) \
                         .filter(Crime.longitude > bounds[1]) \
                         .filter(Crime.longitude < bounds[3]) \
-                        .filter(Crime.city.in_(city_names)) \
-                        .limit(MAX_CRIMES).all()
+                        .filter(Crime.city.in_(city_names))
+    
+    #crime filtering bit more complicated due to "other" option, so we'll just work based on if that is in the list crime_names
+    if("OTHER" in crime_names):
+        #if "OTHER" is selected, then just filter out unselected values
+        #remove "OTHER" to avoid KeyError
+        crime_names.remove("OTHER")
+        
+        #getting values that are 
+        toFilterOut = list(set([crimetype for arr in CRIME_TYPES.values() for crimetype in arr]) - set([crimetype for key in crime_names for crimetype in CRIME_TYPES[key]]))
+
+        #filter out the unchecked
+        for name in toFilterOut:
+            crimes = crimes.filter(~Crime.description.contains(name))
+            
+    else:
+        #if "OTHER" isn't selected, then we can just filter for whatever values ARE selected
+        toFilterFor = [crimetype for key in crime_names for crimetype in CRIME_TYPES[key]]
+
+        #filter for checked values
+        crimes = crimes.filter(or_(Crime.description.contains(name) for name in toFilterFor))
+
+    crimes = crimes.limit(MAX_CRIMES).all()
     return jsonify(crimes=[i.serialize for i in crimes])
 
 # arrest endpoint
@@ -73,6 +101,9 @@ lat/long query args:
 uses google.maps.Map.getBounds().toUrlValue() format,
 that is: lat_lo,lng_lo,lat_hi,lng_hi
 bounds=38.955865,-77.232668,39.1646,-77.055342
+
+cities: a comma delimited string of cities that should be filtered for
+crime: a comma delimited string of crime types that refers to the pre-defined dictionary of crimes in config.py
 '''
 @app.route('/arrest', methods=['GET'])
 def arrests():
@@ -80,8 +111,12 @@ def arrests():
     min_time = datetime.strptime(request.args.get('min_time'),JS_DATETIME_PARSE_STRING)
     max_time = datetime.strptime(request.args.get('max_time'),JS_DATETIME_PARSE_STRING)
 
+    #parse city/crime names
     city_names = request.args.get('cities').split(',')
     crime_names = request.args.get('crimes').split(',')
+    if("" in crime_names):
+        #in case of no crime checkboxes checked
+        crime_names.remove('')
     
     # parse map boundary values
     bounds = [float(i) for i in request.args.get('bounds').split(',')]
@@ -93,8 +128,29 @@ def arrests():
                         .filter(Arrest.latitude < bounds[2]) \
                         .filter(Arrest.longitude > bounds[1]) \
                         .filter(Arrest.longitude < bounds[3]) \
-                        .filter(Arrest.city.in_(city_names)) \
-                        .limit(MAX_ARRESTS).all()
+                        .filter(Arrest.city.in_(city_names))
+
+    #crime filtering bit more complicated due to "other" option, so we'll just work based on if that is in the list crime_names
+    if("OTHER" in crime_names):
+        #if "OTHER" is selected, then just filter out unselected values
+        #remove "OTHER" to avoid KeyError
+        crime_names.remove("OTHER")
+        
+        #getting values that are 
+        toFilterOut = list(set([crimetype for arr in CRIME_TYPES.values() for crimetype in arr]) - set([crimetype for key in crime_names for crimetype in CRIME_TYPES[key]]))
+
+        #filter out the unchecked
+        for name in toFilterOut:
+            arrests = arrests.filter(~Arrest.offense.contains(name))
+            
+    else:
+        #if "OTHER" isn't selected, then we can just filter for whatever values ARE selected
+        toFilterFor = [crimetype for key in crime_names for crimetype in CRIME_TYPES[key]]
+        
+        #filter for checked values
+        arrests = arrests.filter(or_(Arrest.offense.contains(name) for name in toFilterFor))
+     
+    arrests = arrests.limit(MAX_ARRESTS).all()
     return jsonify(arrests=[i.serialize for i in arrests])
 
 
