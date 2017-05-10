@@ -1,3 +1,5 @@
+# author: Jody LeSage
+
 # functions for connecting to 3rd party APIs and writing data to the database
 # will populate the database when run as main
 # requires config.py
