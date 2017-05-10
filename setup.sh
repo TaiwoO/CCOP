@@ -1,10 +1,10 @@
 #!/bin/bash
+# author: Jody LeSage
 
 # this file is written to make the application easy to set up
 # when run as root, it installs dependencies and
 # sets up a python virtual environment in which to run
 # additionally, it builds an empty database
-
 
 # update apt
 sudo apt-get update
