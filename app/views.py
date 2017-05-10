@@ -1,3 +1,5 @@
+# authors: Jody LeSage, Taiwo Oyekanmi, John Shueh
+
 # defines web routing for the app
 # i.e. which urls display which information
 
