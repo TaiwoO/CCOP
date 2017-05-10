@@ -1,4 +1,5 @@
 /*
+  author: John Shueh
   filtermenu.js contains functions pertaining to the interactive elements on the filter menu toggled by the filter button in the top-right of the interface.
   
   includes:
