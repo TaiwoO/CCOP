@@ -1,3 +1,4 @@
+// authors: Jody LeSage, John Shueh, Taiiwo Oyekanmi
 //ties together all of the other javascript files
 
 
