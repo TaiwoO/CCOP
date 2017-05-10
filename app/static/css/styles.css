@@ -99,7 +99,7 @@ body {
     position: fixed;
     height: 100%;
     color: #e1ffff;
-    transition: 0.5s;/* 0.5 second transition effect to slide in the sidenav */
+    transition: 0.05s;/* 0.5 second transition effect to slide in the sidenav */
     width: 0px;/* 0 width - change this with JavaScript */
     right: 0; /* nav bar on right */
     z-index: 10; /* Stay on the top layer */
