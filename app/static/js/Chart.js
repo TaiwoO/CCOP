@@ -41,7 +41,9 @@ function initPieChart() {
             pieHole: 0.4,
             width: 600,
             height: 600,
-            enableInteractivity: false
+            enableInteractivity: false,
+            fontSize: 16,
+            legend: {textStyle: {fontSize: 16}}
         };
         // Instantiate and draw our chart, passing in some options.
         piechart = new google.visualization.PieChart(document.getElementById('piechart'));
@@ -97,8 +99,10 @@ function updatePieChart(query) {
                 title: title,
                 pieHole: 0.4,
                 width: 600,
-                height: 500,
-                enableInteractivity: false
+                height: 600,
+                enableInteractivity: false,
+                fontSize: 16,
+                legend: {textStyle: {fontSize: 16}}
 
             };
 
