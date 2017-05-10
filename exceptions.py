@@ -1,3 +1,4 @@
+# author: Jody LeSage
 # file of custom exceptions
 
 # raised when daily API query limit is reached
