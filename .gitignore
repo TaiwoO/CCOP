@@ -1,4 +1,5 @@
-# this comment is useless
+# author: Jody LeSage
+
 # the main config file contains API keys
 # and should stay off github
 config.py
