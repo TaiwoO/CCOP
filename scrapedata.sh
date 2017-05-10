@@ -1,4 +1,5 @@
 #!/bin/bash
+# author: Jody LeSage
 
 # this file runs api_interface.py from the virtual environment
 source ccop_env/bin/activate
