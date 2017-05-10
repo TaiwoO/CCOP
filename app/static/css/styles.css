@@ -79,6 +79,14 @@ body {
     width: 100px;
 }
 
+#piechart {
+    margin-left: 8%;
+}
+
+#histogram {
+    margin-left: 8%;
+}
+
 /*======================SIDE NAVIGATION BAR====================*/
 
 #nav-side-menu {

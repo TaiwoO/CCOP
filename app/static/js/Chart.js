@@ -198,7 +198,7 @@ function updateLineChart(crimes, arrests) {
 
         var options = {
             hAxis: {
-                title: 'Dates'
+                direction:-1, slantedText:true, slantedTextAngle:40
             },
             vAxis: {
                 title: 'Frequency'
@@ -206,7 +206,8 @@ function updateLineChart(crimes, arrests) {
             legend: { position: 'left' },
             title: 'Arrest Freqency by Date',
             width: 600,
-            height: 400
+            height: 500,
+            fontSize: 16
         };
 
         linechart.draw(linechartData, options);
