@@ -41,7 +41,9 @@ function initPieChart() {
             pieHole: 0.4,
             width: 600,
             height: 600,
-            enableInteractivity: false
+            enableInteractivity: false,
+            fontSize: 16,
+            legend: {textStyle: {fontSize: 16}}
         };
         // Instantiate and draw our chart, passing in some options.
         piechart = new google.visualization.PieChart(document.getElementById('piechart'));
@@ -97,8 +99,10 @@ function updatePieChart(query) {
                 title: title,
                 pieHole: 0.4,
                 width: 600,
-                height: 500,
-                enableInteractivity: false
+                height: 600,
+                enableInteractivity: false,
+                fontSize: 16,
+                legend: {textStyle: {fontSize: 16}}
 
             };
 
@@ -194,7 +198,7 @@ function updateLineChart(crimes, arrests) {
 
         var options = {
             hAxis: {
-                title: 'Dates'
+                direction:-1, slantedText:true, slantedTextAngle:40
             },
             vAxis: {
                 title: 'Frequency'
@@ -202,7 +206,8 @@ function updateLineChart(crimes, arrests) {
             legend: { position: 'left' },
             title: 'Arrest Freqency by Date',
             width: 600,
-            height: 400
+            height: 500,
+            fontSize: 16
         };
 
         linechart.draw(linechartData, options);
