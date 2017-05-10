@@ -1,3 +1,5 @@
+# authors: Jody LeSage, Taiwo Oyekanmi, John Shueh, & Robert Bradshaw
+
 # description of Crime and Arrest Models
 # used by SQLAlchemy (object-relational mapper)
 # to smoothly convert python objects to and from
