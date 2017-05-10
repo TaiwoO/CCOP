@@ -1,4 +1,5 @@
 # this file describes behavior when the CCOP application is run
+# author: Jody LeSage
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
