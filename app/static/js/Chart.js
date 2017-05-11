@@ -207,7 +207,8 @@ function updateLineChart(crimes, arrests) {
             title: 'Arrest Freqency by Date',
             width: 600,
             height: 500,
-            fontSize: 16
+            fontSize: 16,
+            colors:["red"]
         };
 
         linechart.draw(linechartData, options);
