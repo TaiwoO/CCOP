@@ -198,7 +198,7 @@ function updateLineChart(crimes, arrests) {
 
         var options = {
             hAxis: {
-                direction:-1, slantedText:true, slantedTextAngle:40
+                direction:1, slantedText:true, slantedTextAngle:40
             },
             vAxis: {
                 title: 'Frequency'
