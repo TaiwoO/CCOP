@@ -53,7 +53,10 @@ def crimes():
     if("" in crime_names):
         #in case of no crime checkboxes checked
         crime_names.remove('')
-    
+
+    if(len(city_names) == 0 or len(crime_names) == 0):
+        return jsonify(crimes=[])
+        
     # parse map boundary values
     bounds = [float(i) for i in request.args.get('bounds').split(',')]
 
@@ -119,7 +122,10 @@ def arrests():
     if("" in crime_names):
         #in case of no crime checkboxes checked
         crime_names.remove('')
-    
+
+    if(len(city_names) == 0 or len(crime_names) == 0):
+        return jsonify(arrests=[])        
+        
     # parse map boundary values
     bounds = [float(i) for i in request.args.get('bounds').split(',')]
 
