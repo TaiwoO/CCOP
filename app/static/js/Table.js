@@ -31,7 +31,10 @@ function initTables(){
 	    { "title": "Time", "data" : "dispatch" },
 	    { "title": "City", "data" : "city" },
 	    { "title": "Offense", "data" : "description" }
-	]
+	],
+	"language": {
+	    "zeroRecords": "No relevant records available in database",
+	}
     });
     arrestTable = $("#arresttable").DataTable({
 	"deferRender": true,
@@ -49,7 +52,10 @@ function initTables(){
 	    { "title": "Time", "data" : "date" },
 	    { "title": "City", "data" : "city" },
 	    { "title": "Offense", "data" : "offense" }
-	]
+	],
+	"language": {
+	    "zeroRecords": "No relevant records available in database",
+	}
     });
 };
 
